@@ -32,7 +32,7 @@ namespace ModbusSlave
 
             for (int i = 0; i < value.Length; i++)
             {
-                int val = Int32.Parse(value[i].ToString());
+                int val = Int32.Parse(value[value.Length-i-1].ToString());
                 int pow = ((int)Math.Pow(2, i));
                 result = result + ( val * pow);
             }

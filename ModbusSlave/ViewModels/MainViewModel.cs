@@ -9,6 +9,7 @@ using Caliburn.Micro;
 
 namespace ModbusSlave.ViewModels
 {
+   
     class MainViewModel : Screen
     {
 
@@ -18,36 +19,10 @@ namespace ModbusSlave.ViewModels
 
         private int[,] data2D;
 
-        private bool isHeximal;
-
-        private bool isBinary;
-
         public string Title => "Modbus Slave";
 
         public string Format => "X";
 
-      
-
-        public bool IsHeximal
-        {
-            get => this.isHeximal;
-            set
-            {
-                this.isHeximal = value;
-                NotifyOfPropertyChange(() => Data2D);
-            }
-            
-        }
-
-        public bool IsBinary
-        {
-            get => this.isBinary;
-            set
-            {
-                this.isBinary = value;
-                NotifyOfPropertyChange(() => Data2D);
-            }
-        }
 
         public int[] BaudRate => new int[] { 115200, 19200, 9600 };
 
