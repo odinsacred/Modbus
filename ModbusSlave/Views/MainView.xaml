@@ -1,0 +1,83 @@
+﻿<Window x:Class="ModbusSlave.Views.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:dataGrid2D="http://gu.se/DataGrid2D"
+        xmlns:cal="http://www.caliburnproject.org"
+        xmlns:local="clr-namespace:ModbusSlave"
+        xmlns:v="clr-namespace:ModbusSlave.Views"
+        mc:Ignorable="d"
+        Title="{Binding Title}">
+    <Window.Resources>
+        <local:EditableInt2DConverter x:Key="EditableInt2DConverter"/>
+    </Window.Resources>
+    <Grid Background="LightBlue">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"></RowDefinition>
+            <RowDefinition ></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="3*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0" Orientation="Vertical" Grid.RowSpan="2" >
+            <TextBlock Padding="5">Адрес</TextBlock>
+            <TextBox Padding="5" Margin="5" Text="1"/>
+            <TextBlock Padding="5">Порт</TextBlock>
+            <ComboBox Padding="5" Margin="5"></ComboBox>
+            <TextBlock Padding="5">Скорость обмена</TextBlock>
+            <ComboBox Padding="5" Margin="5" ItemsSource="{Binding BaudRate}"></ComboBox>
+            <TextBlock Padding="5">Биты данных</TextBlock>
+            <ComboBox Padding="5" Margin="5" ItemsSource="{Binding DataBits}"></ComboBox>
+            <TextBlock Padding="5">Четность</TextBlock>
+            <ComboBox Padding="5" Margin="5" ItemsSource="{Binding Parities}"></ComboBox>
+            <TextBlock Padding="5">Стоп биты</TextBlock>
+            <ComboBox Padding="5" Margin="5" ItemsSource="{Binding StopBits}"></ComboBox>
+            <Button Padding="5" Margin="5" Content="Открыть порт"/>
+            <Button Padding="5" Margin="5" Content="Закрыть порт"/>
+        </StackPanel>
+        <Grid Grid.Column="1" Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition Height="8*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <TabControl Grid.RowSpan="2">
+                <TabItem cal:Message.Attach="[Event MouseDoubleClick] = [Action RandomizeData]" Header="HEX" ToolTip="Двойной клик заполняет ячейки случайными значениями" MinWidth="50">
+                    <v:HexView/>
+                </TabItem>
+                <TabItem cal:Message.Attach="[Event MouseDoubleClick] = [Action RandomizeData]" Header="DEC" ToolTip="Двойной клик заполняет ячейки случайными значениями" MinWidth="50">
+                    <v:DecView/>
+                </TabItem>
+                <TabItem cal:Message.Attach="[Event MouseDoubleClick] = [Action RandomizeData]" Header="BIN" ToolTip="Двойной клик заполняет ячейки случайными значениями" MinWidth="50">
+                    <v:BinaryView/>
+                </TabItem>
+            </TabControl>
+        </Grid>
+
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <TabControl Grid.Column="0" Grid.RowSpan="2" Margin="5">
+                <TabItem Header="HEX View">
+                    <ScrollViewer  Margin="0,5">
+                        <ListBox IsEnabled="False"></ListBox>
+                    </ScrollViewer>
+                </TabItem>
+                <TabItem Header="Modbus View">
+                    <ScrollViewer  Margin="0,5">
+                        <ListBox IsEnabled="False"></ListBox>
+                    </ScrollViewer>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </Grid>
+</Window>
