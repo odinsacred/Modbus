@@ -27,11 +27,15 @@ namespace CRCLib
             byte temp = 0;
             foreach (byte item in data)
             {
-                temp = (byte)(crc ^ item);
-                crc >>= 8;
-                crc ^= table[temp];
+                if (poly.RefIn)
+                    temp = (byte)((crc>>8) ^ BitReverse(item));
+                else
+                    temp = (byte)((crc >> 8) ^ item);
+                crc = (UInt16)((crc << 8) ^ table[temp & 0x00FF]);
             }
             crc ^= poly.XorOut;
+            if (poly.RefOut)
+                crc = BitReverse(crc);
             return crc;
         }
 
@@ -40,18 +44,16 @@ namespace CRCLib
             UInt16[] csTable = new UInt16[256];
             for (UInt16 i = 0; i <= 255; i++)
             {
-                csTable[i] = GetCRC(i, polynomial.Poly, polynomial.RefIn, polynomial.RefOut, polynomial.XorOut);
+                csTable[i] = GetCRC(i, polynomial.Poly);
             }
             return csTable;
         }
 
-        private UInt16 GetCRC(UInt16 data, UInt16 poly, bool refIn, bool refOut, UInt16 xorOut)
+        private UInt16 GetCRC(UInt16 data, UInt16 poly)
         {
             data <<= 8;
-            if (refIn)
-                data = BitReverse(data);
 
-            for (byte i = 0; i < 16; i++)
+            for (byte i = 0; i < 8; i++)
             {
                 
                 if ((data & 0x8000) != 0)
@@ -63,10 +65,6 @@ namespace CRCLib
                     data <<= 1;
                 }
             }
-
-            if (refOut)
-                data = BitReverse(data);
-
             return data;
         }
 
@@ -87,6 +85,22 @@ namespace CRCLib
             return result;
         }
 
-       
+
+        byte BitReverse(byte data)
+        {
+            byte result = 0;
+            byte temp = 0;
+            byte mask = 0x01;
+
+            for (int i = 0; i < 8; i++)
+            {
+                result <<= 1;
+                temp = (byte)(data & mask);
+                result |= temp;
+                data >>= 1;
+            }
+            return result;
+        }
+
     }
 }

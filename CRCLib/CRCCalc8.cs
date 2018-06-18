@@ -23,16 +23,21 @@ namespace CRCLib
             if (data == null)
                 throw new ArgumentNullException("val");
 
-            byte init = poly.Init;// 0;
+            byte crc = poly.Init;// 0;
             byte temp = 0;
             foreach (byte item in data)
             {
-                temp = (byte)(init ^ item);
-                init >>= 8;
-                init ^= table[temp];
+                if(poly.RefIn)
+                    temp = (byte)(crc ^ BitReverse(item));
+                else
+                    temp = (byte)(crc ^ item);
+                crc >>= 8;
+                crc ^= table[temp];
             }
-            init ^= poly.XorOut;
-            return init;
+            crc ^= poly.XorOut;
+            if (poly.RefOut)
+                crc = BitReverse(crc);
+            return crc;
         }
 
         private byte[] GenerateTable(IPolynomial polynomial)
@@ -40,16 +45,13 @@ namespace CRCLib
             byte[] csTable = new byte[255];
             for (byte i = 0; i < 255; i++)
             {
-                csTable[i] = GetCRC(i, polynomial.Poly, polynomial.RefIn, polynomial.RefOut,polynomial.XorOut);
+                csTable[i] = GetCRC(i, polynomial.Poly);
             }
             return csTable;
         }
 
-        private byte GetCRC(byte data, byte poly, bool refIn, bool refOut, byte xorOut)
+        private byte GetCRC(byte data, byte poly)
         {
-            if(refIn)
-                data = BitReverse(data);
-            
             for (int i = 0; i < 8; i++)
             {
                 if ((data & 0x80) != 0)
@@ -61,8 +63,6 @@ namespace CRCLib
                     data <<= 1;
                 }
             }
-            if(refOut)
-                data = BitReverse(data);
             return data;
         }
 
