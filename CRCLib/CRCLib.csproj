@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{202C41D6-1CF8-493D-948B-458AF0C91A98}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CRCLib</RootNamespace>
+    <AssemblyName>CRCLib</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CrcCalc16.cs" />
+    <Compile Include="CrcCalc8.cs" />
+    <Compile Include="Poly\CRC16\Crc16A.cs" />
+    <Compile Include="Poly\CRC16\Crc16ARC.cs" />
+    <Compile Include="Poly\CRC16\Crc16AugCCITT.cs" />
+    <Compile Include="Poly\CRC16\Crc16BUYPASS.cs" />
+    <Compile Include="Poly\CRC16\Crc16CCITT.cs" />
+    <Compile Include="Poly\CRC16\Crc16CDMA2000.cs" />
+    <Compile Include="Poly\CRC16\Crc16DDS110.cs" />
+    <Compile Include="Poly\CRC16\Crc16DECT-R.cs" />
+    <Compile Include="Poly\CRC16\Crc16DECT_X.cs" />
+    <Compile Include="Poly\CRC16\Crc16DNP.cs" />
+    <Compile Include="Poly\CRC16\Crc16EN13757.cs" />
+    <Compile Include="Poly\CRC16\Crc16GENIBUS.cs" />
+    <Compile Include="Poly\CRC16\Crc16KERMIT.cs" />
+    <Compile Include="Poly\CRC16\Crc16Maxim.cs" />
+    <Compile Include="Poly\CRC16\Crc16Modbus.cs" />
+    <Compile Include="Poly\CRC16\Crc16MCRF4XX.cs" />
+    <Compile Include="Poly\CRC16\Crc16RIELLO.cs" />
+    <Compile Include="Poly\CRC16\Crc16T10DIF.cs" />
+    <Compile Include="Poly\CRC16\Crc16Teledisk.cs" />
+    <Compile Include="Poly\CRC16\Crc16TMS37157.cs" />
+    <Compile Include="Poly\CRC16\Crc16USB.cs" />
+    <Compile Include="Poly\CRC16\Crc16X25.cs" />
+    <Compile Include="Poly\CRC16\Crc16Xmodem.cs" />
+    <Compile Include="Poly\CRC8\Crc8CDMA2000.cs" />
+    <Compile Include="Poly\CRC8\Crc8DARC.cs" />
+    <Compile Include="Poly\CRC8\Crc8DVBS2.cs" />
+    <Compile Include="Poly\CRC8\Crc8EBU.cs" />
+    <Compile Include="Poly\CRC8\Crc8ICODE.cs" />
+    <Compile Include="Poly\CRC8\Crc8ITU.cs" />
+    <Compile Include="Poly\CRC8\Crc8MAXIM.cs" />
+    <Compile Include="Poly\CRC8\Crc8ROHC.cs" />
+    <Compile Include="Poly\CRC8\Crc8Usual.cs" />
+    <Compile Include="Poly\CRC8\Crc8WCDMA.cs" />
+    <Compile Include="Poly\IPolynomial.cs" />
+    <Compile Include="Poly\IPolynomial16.cs" />
+    <Compile Include="Poly\Polynomials.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

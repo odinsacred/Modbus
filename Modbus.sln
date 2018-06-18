@@ -5,6 +5,20 @@ VisualStudioVersion = 15.0.27428.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModbusSlave", "ModbusSlave\ModbusSlave.csproj", "{E969C1F2-8EEF-4FEE-9702-04CE27D0B3CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModbusLib", "ModbusLib\ModbusLib.csproj", "{CF7199BD-D138-475C-BF90-830F794467CB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ModbusTests", "ModbusTests", "{B18D5868-0FF1-4289-8515-4CB8655111B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModbusLibTest", "ModbusLibTest\ModbusLibTest.csproj", "{60E098EF-624B-4253-84C8-F0756EFC3B9C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComPortLib", "ComPortLib\ComPortLib.csproj", "{9AE908CD-025A-4FED-8C51-C168F00423D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlaveTestApp", "SlaveTestApp\SlaveTestApp.csproj", "{60B45FE9-6AAF-4FEC-85A7-B345B77F3CEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRCLib", "CRCLib\CRCLib.csproj", "{202C41D6-1CF8-493D-948B-458AF0C91A98}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRCLibTest", "CRCLibTest\CRCLibTest.csproj", "{91B823F7-4A95-4EB6-B624-FB28ACEE731F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,9 +29,37 @@ Global
 		{E969C1F2-8EEF-4FEE-9702-04CE27D0B3CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E969C1F2-8EEF-4FEE-9702-04CE27D0B3CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E969C1F2-8EEF-4FEE-9702-04CE27D0B3CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF7199BD-D138-475C-BF90-830F794467CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF7199BD-D138-475C-BF90-830F794467CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF7199BD-D138-475C-BF90-830F794467CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF7199BD-D138-475C-BF90-830F794467CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60E098EF-624B-4253-84C8-F0756EFC3B9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60E098EF-624B-4253-84C8-F0756EFC3B9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60E098EF-624B-4253-84C8-F0756EFC3B9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60E098EF-624B-4253-84C8-F0756EFC3B9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AE908CD-025A-4FED-8C51-C168F00423D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AE908CD-025A-4FED-8C51-C168F00423D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AE908CD-025A-4FED-8C51-C168F00423D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AE908CD-025A-4FED-8C51-C168F00423D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60B45FE9-6AAF-4FEC-85A7-B345B77F3CEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60B45FE9-6AAF-4FEC-85A7-B345B77F3CEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60B45FE9-6AAF-4FEC-85A7-B345B77F3CEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60B45FE9-6AAF-4FEC-85A7-B345B77F3CEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{202C41D6-1CF8-493D-948B-458AF0C91A98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{202C41D6-1CF8-493D-948B-458AF0C91A98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{202C41D6-1CF8-493D-948B-458AF0C91A98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{202C41D6-1CF8-493D-948B-458AF0C91A98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91B823F7-4A95-4EB6-B624-FB28ACEE731F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91B823F7-4A95-4EB6-B624-FB28ACEE731F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91B823F7-4A95-4EB6-B624-FB28ACEE731F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91B823F7-4A95-4EB6-B624-FB28ACEE731F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{60E098EF-624B-4253-84C8-F0756EFC3B9C} = {B18D5868-0FF1-4289-8515-4CB8655111B9}
+		{91B823F7-4A95-4EB6-B624-FB28ACEE731F} = {B18D5868-0FF1-4289-8515-4CB8655111B9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3813EE8B-7CAC-4242-BB1E-4431281ADCF0}
