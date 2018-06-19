@@ -135,5 +135,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CRCLib\CRCLib.csproj">
+      <Project>{202c41d6-1cf8-493d-948b-458af0c91a98}</Project>
+      <Name>CRCLib</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

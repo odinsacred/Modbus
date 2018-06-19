@@ -40,9 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FunctionsImplementation.cs" />
+    <Compile Include="Device.cs" />
+    <Compile Include="Functions\FunctionsImplementation.cs" />
     <Compile Include="ICommunication.cs" />
-    <Compile Include="IFunctions.cs" />
+    <Compile Include="Functions\IFunctions.cs" />
     <Compile Include="IMemoryMap.cs" />
     <Compile Include="MemoryMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -54,6 +55,10 @@
     <ProjectReference Include="..\ComPortLib\ComPortLib.csproj">
       <Project>{9ae908cd-025a-4fed-8c51-c168f00423d4}</Project>
       <Name>ComPortLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CRCLib\CRCLib.csproj">
+      <Project>{202c41d6-1cf8-493d-948b-458af0c91a98}</Project>
+      <Name>CRCLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
