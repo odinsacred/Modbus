@@ -91,8 +91,13 @@
     </Compile>
     <Compile Include="AppBootstrapper.cs" />
     <Compile Include="BinaryConverter.cs" />
+    <Compile Include="Cell.cs" />
+    <Compile Include="Directory\Data\DirectoryItem.cs" />
+    <Compile Include="Directory\Data\DirectoryItemType.cs" />
+    <Compile Include="Directory\DirectoryStructure.cs" />
     <Compile Include="EditableInt2DConverter.cs" />
-    <Compile Include="Parity.cs" />
+    <Compile Include="HeaderToImageConvertor.cs" />
+    <Compile Include="StringHexConverter.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\BinaryView.xaml.cs">
       <DependentUpon>BinaryView.xaml</DependentUpon>
@@ -136,10 +141,25 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ComPortLib\ComPortLib.csproj">
+      <Project>{9ae908cd-025a-4fed-8c51-c168f00423d4}</Project>
+      <Name>ComPortLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CRCLib\CRCLib.csproj">
       <Project>{202c41d6-1cf8-493d-948b-458af0c91a98}</Project>
       <Name>CRCLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ModbusLib\ModbusLib.csproj">
+      <Project>{cf7199bd-d138-475c-bf90-830f794467cb}</Project>
+      <Name>ModbusLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\database-off.png" />
+    <Resource Include="Images\database-on.png" />
+    <Resource Include="Images\device.png" />
+    <Resource Include="Images\right arrow.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

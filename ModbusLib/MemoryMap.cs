@@ -1,157 +1,97 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ModbusLib
 {
     public class MemoryMap : IMemoryMap
     {
-        private const int MEMORY_BLOCK_LENGTH = 65536;
-        internal bool[] _discreteInputs;
-        internal bool[] _coils;
-        internal UInt16[] _inputRegisters;
-        internal UInt16[] _holdingRegisters;
+        internal List<Register<UInt16>> HoldingRegisters { get; } = new List<Register<UInt16>>();
+        internal List<Register<UInt16>> InputRegisters { get; } = new List<Register<UInt16>>();
+
+        public UInt16 HoldingRegsCount { get; set; }
+        public UInt16 InputRegsCount { get; set; }
 
         public MemoryMap()
         {
-            _discreteInputs = new bool[MEMORY_BLOCK_LENGTH];
-            _coils = new bool[MEMORY_BLOCK_LENGTH];
-            _inputRegisters = new UInt16[MEMORY_BLOCK_LENGTH];
-            _holdingRegisters = new UInt16[MEMORY_BLOCK_LENGTH];
+            HoldingRegsCount = 0;
+            InputRegsCount = 0;
         }
 
-        public bool GetDiscreteInput(uint index)
+        public void AddHoldingRegister(Register<UInt16> register)
         {
-            //if (index > MEMORY_BLOCK_LENGTH)
-            //    throw new ArgumentOutOfRangeException("index > MEMORY_BLOCK_LENGTH");
-
-            return _discreteInputs[index];
+            HoldingRegisters.Add(register);
+            HoldingRegsCount = (UInt16)HoldingRegisters.Count;
         }
 
-        public void SetDiscreteInput(uint index, bool value)
+        public void AddInputRegister(Register<UInt16> register)
         {
-            //if (index > MEMORY_BLOCK_LENGTH)
-            //    throw new ArgumentOutOfRangeException("index > MEMORY_BLOCK_LENGTH");
-
-            _discreteInputs[index] = value;
+            InputRegisters.Add(register);
+            InputRegsCount = (UInt16)InputRegisters.Count;
         }
 
-        public bool GetCoil(uint index)
+        public UInt16 GetInputRegister(UInt16 address)
         {
-            //if (index > MEMORY_BLOCK_LENGTH)
-            //    throw new ArgumentOutOfRangeException("index > MEMORY_BLOCK_LENGTH");
-
-            return _coils[index];
+            var finded = InputRegisters.Find(x => x.Address == address);
+            return finded.Value;
         }
 
-        public void SetCoil(uint index, bool value)
+        public void SetInputRegister(UInt16 address, UInt16 value)
         {
-            if (index > MEMORY_BLOCK_LENGTH)
-                throw new ArgumentOutOfRangeException("index > MEMORY_BLOCK_LENGTH");
 
-            _coils[index] = value;
+            int index = InputRegisters.FindIndex(x => x.Address == address);
+            InputRegisters[index].Value = value;
         }
 
-        public UInt16 GetInputRegister(uint index)
+        public UInt16 GetHoldingRegister(UInt16 address)
         {
-            //if (index > MEMORY_BLOCK_LENGTH)
-            //    throw new ArgumentOutOfRangeException("index > MEMORY_BLOCK_LENGTH");
+            var finded = HoldingRegisters.Find(x => x.Address == address);
 
-            return _inputRegisters[index];
+            return finded.Value;
         }
 
-        public void SetInputRegister(uint index, UInt16 value)
+        public void SetHoldingRegister(UInt16 address, UInt16 value)
         {
-            //if (index > MEMORY_BLOCK_LENGTH)
-            //    throw new ArgumentOutOfRangeException("index > MEMORY_BLOCK_LENGTH");
-
-            _inputRegisters[index] = value;
-        }
-
-        public UInt16 GetHoldingRegister(uint index)
-        {
-            //if (index > MEMORY_BLOCK_LENGTH)
-            //    throw new ArgumentOutOfRangeException("index > MEMORY_BLOCK_LENGTH");
-
-            return _holdingRegisters[index];
-        }
-
-        public void SetHoldingRegister(int index, UInt16 value)
-        {
-            _holdingRegisters[index] = value;
+            int index = HoldingRegisters.FindIndex(x => x.Address == address);
+            HoldingRegisters[index].Value = value;
         }
 
         //-----------------------------------------------------------------
 
-        public bool[] GetDiscreteInputs(uint index, uint count)
+        public UInt16[] GetInputRegisters(UInt16 index, UInt16 count)
         {
-            //if (index > MEMORY_BLOCK_LENGTH)
-            //    throw new ArgumentOutOfRangeException("index > MEMORY_BLOCK_LENGTH");
-            if(count == 0)
-                throw new ArgumentException("count == 0");
-            if(index + count > MEMORY_BLOCK_LENGTH)
-                throw new ArgumentOutOfRangeException("index + count > MEMORY_BLOCK_LENGTH");
-
-            bool[] array = new bool[count];
-            for (uint i = index, j = 0; i < count; i++, j++)
-            {
-                array[j] = _discreteInputs[i];
-            }
-            return array;
-        }
-
-        public bool[] GetCoils(uint index, uint count)
-        {
-            //if (index > MEMORY_BLOCK_LENGTH)
-            //    throw new ArgumentOutOfRangeException("index > MEMORY_BLOCK_LENGTH");
             if (count == 0)
                 throw new ArgumentException("count == 0");
-            if (index + count > MEMORY_BLOCK_LENGTH)
-                throw new ArgumentOutOfRangeException("index + count > MEMORY_BLOCK_LENGTH");
+            if (index + count > InputRegisters.Count)
+                throw new ArgumentOutOfRangeException("index + count out of range");
 
-            bool[] array = new bool[count];
-            for (uint i = index, j = 0; i < count; i++, j++)
-            {
-                array[j] = _discreteInputs[i];
-            }
-            return array;
+            var selected = from item in InputRegisters
+                           where item.Address <= count
+                           select item.Value;
+            return selected.ToArray<UInt16>();
         }
 
-        public UInt16[] GetInputRegisters(uint index, uint count)
+        public UInt16[] GetHoldingRegisters(UInt16 address, UInt16 count)
         {
-            //if (index > MEMORY_BLOCK_LENGTH)
-            //    throw new ArgumentOutOfRangeException("index > MEMORY_BLOCK_LENGTH");
             if (count == 0)
                 throw new ArgumentException("count == 0");
-            if (index + count > MEMORY_BLOCK_LENGTH)
-                throw new ArgumentOutOfRangeException("index + count > MEMORY_BLOCK_LENGTH");
 
-            UInt16[] array = new UInt16[count];
-            for (uint i = index, j = 0; i < count; i++, j++)
-            {
-                array[j] = _inputRegisters[i];
-            }
-            return array;
+            var selected = from item in HoldingRegisters
+                           where item.Address >= address && item.Address < address + count
+                           select item.Value;
+            return selected.ToArray<UInt16>();
         }
 
-        public UInt16[] GetHoldingRegisters(uint index, uint count)
+    }
+
+   
+    public class MemoryChangedEventArgs : EventArgs
+    {
+        public MemoryChangedEventArgs(int address)
         {
-            //if (index > MEMORY_BLOCK_LENGTH)
-            //    throw new ArgumentOutOfRangeException("index > MEMORY_BLOCK_LENGTH");
-            if (count == 0)
-                throw new ArgumentException("count == 0");
-            if (index + count > MEMORY_BLOCK_LENGTH)
-                throw new ArgumentOutOfRangeException("index + count > MEMORY_BLOCK_LENGTH");
-
-            UInt16[] array = new UInt16[count];
-            for (uint i = index, j = 0; i < count; i++, j++)
-            {
-                array[j] = _holdingRegisters[i];
-            }
-            return array;
+            Address = (ushort)address;
         }
 
+        public uint Address { get; set; }
     }
 }

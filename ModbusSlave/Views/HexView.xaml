@@ -10,6 +10,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <local:EditableInt2DConverter x:Key="EditableInt2DConverter"/>
+        <local:StringHexConverter x:Key="StringHexConverter" />
     </UserControl.Resources>
     <Grid>
         <DataGrid Grid.Column="1" Grid.Row="1" x:Name="AutoColumns"
@@ -23,12 +24,12 @@
                       >
             <dataGrid2D:Cell.Template>
                 <DataTemplate>
-                    <TextBlock Padding ="2" Foreground="Black" FontSize="14" Text="{Binding Path=Value, StringFormat=X4}" />
+                    <TextBlock Padding ="2" Foreground="Black" FontSize="14" Text="{Binding Path=Value, StringFormat=X4}" Background="{Binding Path=Color}" />
                 </DataTemplate>
             </dataGrid2D:Cell.Template>
             <dataGrid2D:Cell.EditingTemplate>
                 <DataTemplate>
-                    <TextBox Padding ="2" Foreground="RosyBrown" FontSize="14" FontWeight="Bold" Text="{Binding Path=Value, StringFormat=X4}" />
+                    <TextBox Padding ="2" Foreground="RosyBrown" FontSize="14" FontWeight="Bold" Text="{Binding Value, Converter={StaticResource StringHexConverter}}"/>
                 </DataTemplate>
             </dataGrid2D:Cell.EditingTemplate>
         </DataGrid>

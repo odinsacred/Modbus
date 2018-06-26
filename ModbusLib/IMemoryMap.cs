@@ -8,17 +8,16 @@ namespace ModbusLib
 {
     public interface IMemoryMap
     {
-        bool GetDiscreteInput(uint index);
-        void SetDiscreteInput(uint index, bool value);
-        bool GetCoil(uint index);
-        void SetCoil(uint index, bool value);
-        UInt16 GetInputRegister(uint index);
-        void SetInputRegister(uint index, UInt16 value);
-        UInt16 GetHoldingRegister(uint index);
-        void SetHoldingRegister(int index, UInt16 value);
-        bool[] GetDiscreteInputs(uint index, uint count);
-        bool[] GetCoils(uint index, uint count);
-        UInt16[] GetInputRegisters(uint index, uint count);
-        UInt16[] GetHoldingRegisters(uint index, uint count);
+        UInt16 HoldingRegsCount { get; set; }
+        UInt16 InputRegsCount { get; set; }
+
+        UInt16 GetInputRegister(UInt16 index);
+        void SetInputRegister(UInt16 index, UInt16 value);
+        UInt16 GetHoldingRegister(UInt16 register);
+        void SetHoldingRegister(UInt16 index, UInt16 value);
+        UInt16[] GetInputRegisters(UInt16 index, UInt16 count);
+        UInt16[] GetHoldingRegisters(UInt16 index, UInt16 count);
+
+        void AddHoldingRegister(Register<UInt16> register);
     }
 }

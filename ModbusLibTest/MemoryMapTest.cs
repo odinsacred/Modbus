@@ -7,61 +7,25 @@ namespace ModbusLibTest
     [TestClass]
     public class MemoryMapTest
     {
-        [TestMethod]
-        public void SetDiscreteInputTest()
-        {
-            UInt16 index = 1;
-            MemoryMap map = new MemoryMap();
-            map.SetDiscreteInput(index, true);
-            bool result = map._discreteInputs[index];
-            Assert.AreEqual(result, true);
-        }
-
-        [TestMethod]
-        public void GetDiscreteInputTest()
-        {
-            UInt16 index = 1;
-            MemoryMap map = new MemoryMap();
-            map.SetDiscreteInput(index, true);
-            bool result = map.GetDiscreteInput(index);
-            Assert.AreEqual(result, true);
-        }
-
-        [TestMethod]
-        public void SetCoilTest()
-        {
-            UInt16 index = 1;
-            MemoryMap map = new MemoryMap();
-            map.SetCoil(index, true);
-            bool result = map._coils[index];
-            Assert.AreEqual(result, true);
-        }
-
-        [TestMethod]
-        public void GetCoilTest()
-        {
-            UInt16 index = 1;
-            MemoryMap map = new MemoryMap();
-            map.SetCoil(index, true);
-            bool result = map.GetCoil(index);
-            Assert.AreEqual(result, true);
-        }
-
+        
         [TestMethod]
         public void SetInputRegisterTest()
         {
-            UInt16 index = 1;
+            UInt16 index = 0;
+            UInt16 address = 1;
             MemoryMap map = new MemoryMap();
-            map.SetInputRegister(index, 100);
-            UInt16 result = map._inputRegisters[index];
+            map.AddInputRegister(new Register<ushort>(address) { Value = 100 });
+            map.SetInputRegister(address, 100);
+            UInt16 result = map.InputRegisters[index].Value;
             Assert.AreEqual(result, 100);
         }
 
         [TestMethod]
         public void GetInputRegisterTest()
         {
-            UInt16 index = 1;
+            UInt16 index = 10;
             MemoryMap map = new MemoryMap();
+            map.AddInputRegister(new Register<ushort>(index) { Value = 100 });
             map.SetInputRegister(index, 100);
             UInt16 result = map.GetInputRegister(index);
             Assert.AreEqual(result, 100);
@@ -70,35 +34,25 @@ namespace ModbusLibTest
         [TestMethod]
         public void SetHoldingRegisterTest()
         {
-            UInt16 index = 1;
+            UInt16 index = 0;
+            UInt16 address = 3;
             MemoryMap map = new MemoryMap();
-            map.SetHoldingRegister(index, 100);
-            UInt16 result = map._holdingRegisters[index];
+            map.AddHoldingRegister(new Register<ushort>(address) { Value = 100 });
+            map.SetHoldingRegister(address, 100);
+            UInt16 result = map.HoldingRegisters[index].Value;
             Assert.AreEqual(result, 100);
         }
 
         [TestMethod]
         public void GetHoldingRegisterTest()
         {
-            UInt16 index = 1;
+            UInt16 index = 10;
             MemoryMap map = new MemoryMap();
+            map.AddHoldingRegister(new Register<ushort>(index) { Value = 100 });
             map.SetHoldingRegister(index, 100);
             UInt16 result = map.GetHoldingRegister(index);
             Assert.AreEqual(result, 100);
         }
-
-        //[TestMethod]
-        //public void GetDiscreteInputsArgumentOutOfRangeExceptionTest()
-        //{
-        //    uint index = 65535;
-        //    uint count = 10;
-        //    MemoryMap map = new MemoryMap();
-        //    map.GetDiscreteInputs(index, count);
-        //    Assert.ThrowsException<ArgumentOutOfRangeException>(map.GetDiscreteInputs(index, count));
-        //}
-
-
-
 
     }
 } 

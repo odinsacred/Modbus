@@ -8,18 +8,18 @@ namespace ModbusLib
 {
     public class FunctionsImplementation : IFunctions
     {
-        const byte ERROR_CODE = 0x84;
+        const byte ERROR_CODE = 0x80;
         const byte QUANTITY_OF_REG_EXEPTION = 0x03;
         const byte FUNCTION_CODE_NOT_SUPPORTED = 0x1;
         const byte STARTING_ADDRESS_EXCEPTION = 0x2;
         const byte READ_MULTIPLE_REGISTERS_EXCEPTION = 0x4;
         const byte REGISTER_VALUE_EXEPTION = 0x03;
 
-        IMemoryMap map;
+        IMemoryMap memoryMap;
 
         public FunctionsImplementation(IMemoryMap memory)
         {
-            map = memory;
+            memoryMap = memory;
         }
 
         public List<byte> FuncReadHoldingRegisters(UInt16 startingAddress, byte numberOfRegisters)
@@ -30,19 +30,19 @@ namespace ModbusLib
 
             if (numberOfRegisters == 0 || numberOfRegisters > 125)
             {
-                response.Add(ERROR_CODE);
+                response.Add(0x03 + ERROR_CODE);
                 response.Add(QUANTITY_OF_REG_EXEPTION);
                 return response;
             }
              
             if(startingAddress + numberOfRegisters > 65535)
             {
-                response.Add(ERROR_CODE);
+                response.Add(0x03 + ERROR_CODE);
                 response.Add(STARTING_ADDRESS_EXCEPTION);
                 return response;
             }
             
-            regs = map.GetHoldingRegisters(startingAddress, numberOfRegisters).ToList<UInt16>();
+            regs = memoryMap.GetHoldingRegisters(startingAddress, numberOfRegisters).ToList<UInt16>();
             bytes = Utility.ConvertListUInt16ToListByteBigEndian(regs).ToList<byte>();
             
             byte byteCount = (byte)(numberOfRegisters * 2);
@@ -58,7 +58,7 @@ namespace ModbusLib
             List<UInt16> data = new List<UInt16>();
             List<byte> response = new List<byte>();
 
-            map.SetHoldingRegister(registerAddress, value);
+            memoryMap.SetHoldingRegister(registerAddress, value);
             data.Add(registerAddress);
             data.Add(value);
             bytes = Utility.ConvertListUInt16ToListByteBigEndian(data).ToList<byte>();
@@ -67,10 +67,10 @@ namespace ModbusLib
             return response;
         }
 
-        public List<byte> FunctionCodeNotSupported()
+        public List<byte> FunctionCodeNotSupported(byte function)
         {
             List<byte> response = new List<byte>();
-            response.Add(ERROR_CODE);
+            response.Add((byte)(function + ERROR_CODE));
             response.Add(FUNCTION_CODE_NOT_SUPPORTED);
             return response;
         }

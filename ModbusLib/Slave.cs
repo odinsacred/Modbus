@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO.Ports;
 using ComportLib;
 using System.Threading;
 using CRCLib;
@@ -11,7 +7,7 @@ using CRCLib.Poly;
 
 namespace ModbusLib
 {
-    public class Slave : IDisposable
+    public class Slave
     {
         
         UInt16 _address;
@@ -29,11 +25,6 @@ namespace ModbusLib
             Run(token);
         }
 
-        public void Dispose()
-        {
-            Stop();
-        }
-
         private async void Run(CancellationToken token)
         {
             int count = 0;
@@ -45,12 +36,12 @@ namespace ModbusLib
                 {
                     buffer = new byte[256];
                     count = await _serialPort.ReadBytesAsync(buffer, token);
-                    byte[] message = new byte[count];
+                    List<byte> message = new List<byte>();
                     for (int i = 0; i < count; i++)
                     {
-                        message[i] = buffer[i];
+                        message.Add(buffer[i]);
                     }
-                    await _serialPort.WriteBufferAsync(Parse(message), token);
+                    await _serialPort.WriteBufferAsync(Parse(message.ToArray()), token);
 
                 }
                 catch (Exception ex)
@@ -62,11 +53,6 @@ namespace ModbusLib
             }
             _serialPort.Close();
             _serialPort.Dispose();
-        }
-
-        private void Stop()
-        {
-
         }
 
         private byte[] Parse(byte[] message)
@@ -82,12 +68,12 @@ namespace ModbusLib
                     case 0x03:
                         UInt16 startingAddress = Utility.ConvertBigEndianToLittleEndian(BitConverter.ToUInt16(message,2));
                         UInt16 numOfRegisters = Utility.ConvertBigEndianToLittleEndian(BitConverter.ToUInt16(message, 4));
-                        return CreateResponse(_mbFunctions.FuncReadHoldingRegisters(startingAddress, (byte)numOfRegisters).ToArray());
+                        return CreateResponse(_mbFunctions.FuncReadHoldingRegisters(startingAddress, (byte)numOfRegisters));
                     case 0x06:
                         UInt16 registerAddress = Utility.ConvertBigEndianToLittleEndian(BitConverter.ToUInt16(message, 2));
                         UInt16 Value = Utility.ConvertBigEndianToLittleEndian(BitConverter.ToUInt16(message, 4));
-                        return CreateResponse(_mbFunctions.FuncWriteSingleRegister(registerAddress, (byte)Value).ToArray());
-                    default: return CreateResponse(_mbFunctions.FunctionCodeNotSupported().ToArray());
+                        return CreateResponse(_mbFunctions.FuncWriteSingleRegister(registerAddress, (byte)Value));
+                    default: return CreateResponse(_mbFunctions.FunctionCodeNotSupported(message[1]));
                 }
             }
             else
@@ -96,7 +82,7 @@ namespace ModbusLib
             }
         }
 
-        private byte[] CreateResponse(byte[] message)
+        private byte[] CreateResponse(List<byte> message)
         {
             List<byte> response = new List<byte>();
             

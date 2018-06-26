@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using System.Windows.Media;
 
 namespace ModbusSlave
 {
@@ -12,10 +13,10 @@ namespace ModbusSlave
     {
         class ItemWrapper
         {
-            int[,] container;
+            Cell[,] container;
             int i, j;
 
-            public ItemWrapper(int[,] container, int i, int j)
+            public ItemWrapper(Cell[,] container, int i, int j)
             {
                 this.container = container;
                 this.i = i;
@@ -24,14 +25,26 @@ namespace ModbusSlave
 
             public int Value
             {
-                get => container[i, j];
-                set => container[i, j] = value;
+                get => container[i, j].Value;
+                set => UpdateData(value);//container[i, j].Value = value;
+            }
+
+            public Brush Color
+            {
+                get => container[i, j].BackGroundColor;
+                set => container[i, j].BackGroundColor = value;
+            }
+
+            private void UpdateData(int value)
+            {
+                container[i, j].Value = value;
+                
             }
         }
 
         public object Convert(object value, Type targetType, object p, CultureInfo ci)
         {
-            var array2d = (int[,])value;
+            var array2d = (Cell[,])value;
             var n = array2d.GetLength(0);
             var m = array2d.GetLength(1);
             ItemWrapper[,] items = new ItemWrapper[n, m];
