@@ -12,10 +12,10 @@ namespace ModbusLib
         
         UInt16 _address;
         IMemoryMap _memoryMap;
-        ISerialPort _serialPort;
+        ComportLib.ICommunication _serialPort;
         CrcCalc16 _crcCalc;
         FunctionsImplementation _mbFunctions;
-        public Slave(UInt16 address, ISerialPort serialPort,  IMemoryMap memoryMap, CancellationToken token)
+        public Slave(UInt16 address, ComportLib.ICommunication serialPort,  IMemoryMap memoryMap, CancellationToken token)
         {
             _address = address;
             _memoryMap = memoryMap;

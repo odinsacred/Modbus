@@ -13,19 +13,27 @@ using System.Threading;
 using System.Windows.Media;
 using Microsoft.Win32;
 using System.Windows;
+using System.IO;
+using System.Reflection;
 
 namespace ModbusSlave.ViewModels
 {
    
-    class MainViewModel : Window
+    class MainViewModel : Screen
     {
+
         Slave slave;
         string currentFile;
         SerialComm serialPort;
 
-        MemoryMap memoryMap;
+        Device memoryMap;
 
         CancellationTokenSource cts;
+
+        public ObservableCollection<ItemProperty> Properties { get; set; }
+
+
+        public ObservableCollection<INode> MasterNode { get; set; }
 
         private const int ROWS = 0x1000;
 
@@ -57,9 +65,8 @@ namespace ModbusSlave.ViewModels
 
         public Parity SelectedParity { get; set; } = Parity.None;
 
-       
+        public INode SelectedItem { get; set; }
 
-      
 
         public string[] RowHeaders { get; }
 
@@ -67,10 +74,57 @@ namespace ModbusSlave.ViewModels
 
         private Random rnd = new Random();
 
+        public void SelectItem(object o)
+        {
+            SelectedItem = o as INode;
+            Properties = new ObservableCollection<ItemProperty>();
+            switch (SelectedItem.type)
+            {
+                case NodeTypes.master:
+                    FillRootProp((RootItem)SelectedItem); break;
+                case NodeTypes.port:
+                    FillPortProp((PortItem)SelectedItem); break;
+            }
+        }
+
+        public void SaveParameter(object o)
+        {
+            if(SelectedItem.type == NodeTypes.master)
+            {
+                ((RootItem)SelectedItem).ItemName = (o as ItemProperty).PropertyValue;
+            }
+           
+        }
+
+        private void FillRootProp(RootItem root)
+        {
+
+            Properties.Add(new ItemProperty() { PropertyName = root.GetType().GetProperty("ItemName").Name, PropertyValue = root.GetType().GetProperty("ItemName").GetValue(root).ToString()});//root.ItemName });
+        }
+
+        private void FillPortProp(PortItem port)
+        {
+            Properties.Add(new ItemProperty() { PropertyName = port.GetType().GetProperty("ItemName").Name, PropertyValue = port.GetType().GetProperty("ItemName").GetValue(port).ToString() });
+            Properties.Add(new ItemProperty() { PropertyName = port.GetType().GetProperty("Baud").Name, PropertyValue = port.GetType().GetProperty("Baud").GetValue(port).ToString() });
+        }
         public MainViewModel()
         {
-            memoryMap = new MemoryMap();
-            //RandomizeData();
+            
+            memoryMap = new Device();
+            MasterNode = new ObservableCollection<INode>();
+            RootItem mainItem = new RootItem();
+            mainItem.ItemName = "Master Node";
+            //mainItem.Children.Add(new DummyNode());
+            MasterNode.Add(mainItem);
+        }
+
+        public void TreeSelectionChanged(object o)
+        {
+            INode node = o as INode;
+            if(node.type == NodeTypes.master)
+            {
+
+            }
         }
 
         public void RandomizeData()
@@ -99,6 +153,7 @@ namespace ModbusSlave.ViewModels
             catch (Exception ex)
             {
             }
+            
         }
 
         public void ClosePort()
@@ -108,7 +163,7 @@ namespace ModbusSlave.ViewModels
 
 
 
-        public void mnuOpen_Click()
+        public void mnuOpenClick()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
 
@@ -124,7 +179,7 @@ namespace ModbusSlave.ViewModels
             }
         }
 
-        public void mnuSave_Click()
+        public void mnuSaveClick()
         {
             SaveFileDialog saveDialog = new SaveFileDialog();
 
@@ -142,9 +197,32 @@ namespace ModbusSlave.ViewModels
             }
         }
 
-        public void mnuExit_Click()
+        public void mnuExitClick()
         {
-            this.Close();
+            //this.Close();
         }
+
+        public void AddPort(object o)
+        {
+            RootItem root = o as RootItem;
+            PortItem port = new PortItem();
+            port.ItemName = "COM " + root.Children.Count;
+            root.AddChild(port);
+        }
+
+        public void DeletePort(object o)
+        {
+            INode node = o as INode;
+            //if (node.type == NodeTypes.port)
+            //    MasterNode[0].Children.Remove(node);
+        }
+
+        public void AddDevice(object o)
+        {
+            DeviceItem device = new DeviceItem();
+            //device.ItemName = "Device " + MasterNode[0].Children.Count;
+            //MasterNode[0].Children.Add(device);
+        }
+
     }
 }

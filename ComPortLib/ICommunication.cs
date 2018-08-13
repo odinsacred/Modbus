@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ComportLib
 {
-    public interface ISerialPort : IDisposable
+    public interface ICommunication : IDisposable
 
     {
         event Action PortClosedEvent;

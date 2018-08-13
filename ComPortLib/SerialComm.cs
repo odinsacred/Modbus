@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ComportLib
 {
-    public class SerialComm : ISerialPort
+    public class SerialComm : ICommunication
     {
         SerialPort _port;
         //Timer timer;

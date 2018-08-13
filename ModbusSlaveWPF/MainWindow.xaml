@@ -1,0 +1,97 @@
+﻿<Window x:Class="ModbusSlaveWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ModbusSlaveWPF"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800"
+        >
+    <Window.Resources>
+        <HierarchicalDataTemplate x:Key="MasterTemplate" ItemsSource="{Binding Path=Children}" >
+            <StackPanel Orientation="Horizontal" Tag="{Binding DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}">
+                <TextBlock Text="{Binding ItemName}" />
+                <StackPanel.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Add Port" Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.Tag.DataContext.AddPort}"></MenuItem>
+                    </ContextMenu>
+                </StackPanel.ContextMenu>
+            </StackPanel>
+        </HierarchicalDataTemplate>
+        <HierarchicalDataTemplate x:Key="PortTemplate" ItemsSource="{Binding Path=Children}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding ItemName}" />
+                <StackPanel.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Add Device" />
+                        <MenuItem Header="Delete Port" Click="DeletePortContextMenu_Click"/>
+                    </ContextMenu>
+                </StackPanel.ContextMenu>
+            </StackPanel>
+        </HierarchicalDataTemplate>
+        <HierarchicalDataTemplate x:Key="DeviceTemplate" ItemsSource="{Binding Path=Children}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding ItemName}" />
+                <StackPanel.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Add Tag" Click="AddTagContextMenu_Click"/>
+                        <MenuItem Header="Add Folder" Click="AddFolderContextMenu_Click"/>
+                        <MenuItem Header="Delete Device" Click="DeleteDeviceContextMenu_Click"/>
+                    </ContextMenu>
+                </StackPanel.ContextMenu>
+            </StackPanel>
+        </HierarchicalDataTemplate>
+    </Window.Resources>
+    <Grid>
+        <Grid  Name="GridLayout">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="19"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <DockPanel Grid.Row="0" Grid.ColumnSpan="2">
+                <Menu Height="20" VerticalAlignment="Top">
+                    <Menu.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="White" Offset="0"/>
+                            <GradientStop Color="White" Offset="1"/>
+                            <GradientStop Color="#FFC2CCE6"/>
+                            <GradientStop Color="#FFE3E7F3" Offset="0.151"/>
+                        </LinearGradientBrush>
+                    </Menu.Background>
+                    <MenuItem Header="File">
+                        <MenuItem Header="Open"/>
+                        <MenuItem Header="Save"/>
+                        <Separator/>
+                        <MenuItem Header="Exit"/>
+                    </MenuItem>
+                    <MenuItem Header="AddIns" Name="menuAddins"/>
+                    <MenuItem Header="Manage">
+                        <!--MenuItem Header="_Refresh Extensions" Click="OnRefreshExtensions"  /-->
+                    </MenuItem>
+                </Menu>
+            </DockPanel>
+            <Grid Grid.Row="1" DockPanel.Dock="Bottom" Background="LightBlue">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+
+                <TreeView ItemsSource="{Binding Nodes}" 
+                          MouseRightButtonDown="treeView1_MouseRightButtonDown">
+
+                    <TreeView.ItemTemplateSelector>
+                        <local:MenuSelector 
+                        MasterTemplate="{StaticResource MasterTemplate}"
+                        PortTemplate="{StaticResource PortTemplate}"/>
+                    </TreeView.ItemTemplateSelector>
+                </TreeView>
+                <ListView Grid.Column="1"></ListView>
+                
+                <!--<Button Command="{Binding AddCommand}">Test</Button>-->
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

@@ -14,7 +14,7 @@ namespace ModbusLibTest
         public void FuncReadHoldingRegistersFunctionCodeTest()
         {
             byte expected = 0x03;
-            MemoryMap memory = new MemoryMap();
+            Device memory = new Device();
             memory.AddHoldingRegister(new Register<ushort>(0) { Value = 100 });
             memory.AddHoldingRegister(new Register<ushort>(1) { Value = 100 });
             memory.SetHoldingRegister(0,0xAABB);
@@ -28,7 +28,7 @@ namespace ModbusLibTest
         public void FuncReadHoldingRegistersByteCountTest()
         {
             byte expected = 0x04;
-            MemoryMap memory = new MemoryMap();
+            Device memory = new Device();
             memory.AddHoldingRegister(new Register<ushort>(0) { Value = 100 });
             memory.AddHoldingRegister(new Register<ushort>(1) { Value = 100 });
             memory.SetHoldingRegister(0, 0xAABB);
@@ -47,7 +47,7 @@ namespace ModbusLibTest
             expected.Add(0xBB);
             expected.Add(0xCC);
             expected.Add(0xDD);
-            MemoryMap memory = new MemoryMap();
+            Device memory = new Device();
             memory.AddHoldingRegister(new Register<ushort>(0) { Value = 100 });
             memory.AddHoldingRegister(new Register<ushort>(1) { Value = 100 });
             memory.SetHoldingRegister(0, 0xAABB);
@@ -69,7 +69,7 @@ namespace ModbusLibTest
             expected.Add(0x00);
             expected.Add(0xAA);
             expected.Add(0xBB);
-            MemoryMap memory = new MemoryMap();
+            Device memory = new Device();
             memory.AddHoldingRegister(new Register<ushort>(0) { Value = 100 });
             FunctionsImplementation imp = new FunctionsImplementation(memory);
             List<byte> response = imp.FuncWriteSingleRegister(0, 0xAABB);
@@ -89,7 +89,7 @@ namespace ModbusLibTest
             List<byte> writedValue = new List<byte>();
             expected.Add(0xAA);
             expected.Add(0xBB);
-            MemoryMap memory = new MemoryMap();
+            Device memory = new Device();
             memory.AddHoldingRegister(new Register<ushort>(0) { Value = 100 });
             FunctionsImplementation imp = new FunctionsImplementation(memory);
             imp.FuncWriteSingleRegister(index, 0xAABB);
@@ -118,7 +118,7 @@ namespace ModbusLibTest
             expected.Add(reg2ValHi);
             expected.Add(reg2ValLo);
 
-            MemoryMap memory = new MemoryMap();
+            Device memory = new Device();
             memory.AddHoldingRegister(new Register<ushort>(0) { Value = 100 });
             memory.AddHoldingRegister(new Register<ushort>(1) { Value = 100 });
             FunctionsImplementation imp = new FunctionsImplementation(memory);

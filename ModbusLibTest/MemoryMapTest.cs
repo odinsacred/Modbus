@@ -13,7 +13,7 @@ namespace ModbusLibTest
         {
             UInt16 index = 0;
             UInt16 address = 1;
-            MemoryMap map = new MemoryMap();
+            Device map = new Device();
             map.AddInputRegister(new Register<ushort>(address) { Value = 100 });
             map.SetInputRegister(address, 100);
             UInt16 result = map.InputRegisters[index].Value;
@@ -24,7 +24,7 @@ namespace ModbusLibTest
         public void GetInputRegisterTest()
         {
             UInt16 index = 10;
-            MemoryMap map = new MemoryMap();
+            Device map = new Device();
             map.AddInputRegister(new Register<ushort>(index) { Value = 100 });
             map.SetInputRegister(index, 100);
             UInt16 result = map.GetInputRegister(index);
@@ -36,7 +36,7 @@ namespace ModbusLibTest
         {
             UInt16 index = 0;
             UInt16 address = 3;
-            MemoryMap map = new MemoryMap();
+            Device map = new Device();
             map.AddHoldingRegister(new Register<ushort>(address) { Value = 100 });
             map.SetHoldingRegister(address, 100);
             UInt16 result = map.HoldingRegisters[index].Value;
@@ -47,7 +47,7 @@ namespace ModbusLibTest
         public void GetHoldingRegisterTest()
         {
             UInt16 index = 10;
-            MemoryMap map = new MemoryMap();
+            Device map = new Device();
             map.AddHoldingRegister(new Register<ushort>(index) { Value = 100 });
             map.SetHoldingRegister(index, 100);
             UInt16 result = map.GetHoldingRegister(index);

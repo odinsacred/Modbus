@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ModbusLib
 {
-    public class MemoryMap : IMemoryMap
+    public class Device : IMemoryMap
     {
         internal List<Register<UInt16>> HoldingRegisters { get; } = new List<Register<UInt16>>();
         internal List<Register<UInt16>> InputRegisters { get; } = new List<Register<UInt16>>();
@@ -12,7 +12,7 @@ namespace ModbusLib
         public UInt16 HoldingRegsCount { get; set; }
         public UInt16 InputRegsCount { get; set; }
 
-        public MemoryMap()
+        public Device()
         {
             HoldingRegsCount = 0;
             InputRegsCount = 0;

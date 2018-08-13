@@ -40,7 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ISerialPort.cs" />
+    <Compile Include="ICommunication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerialComm.cs" />
     <Compile Include="SerialCommExtensions.cs" />

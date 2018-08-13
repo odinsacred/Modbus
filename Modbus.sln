@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRCLib", "CRCLib\CRCLib.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRCLibTest", "CRCLibTest\CRCLibTest.csproj", "{91B823F7-4A95-4EB6-B624-FB28ACEE731F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModbusSlaveWPF", "ModbusSlaveWPF\ModbusSlaveWPF.csproj", "{0B438CAD-A651-42BF-94C4-60829EC73A7C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{91B823F7-4A95-4EB6-B624-FB28ACEE731F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91B823F7-4A95-4EB6-B624-FB28ACEE731F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91B823F7-4A95-4EB6-B624-FB28ACEE731F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B438CAD-A651-42BF-94C4-60829EC73A7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B438CAD-A651-42BF-94C4-60829EC73A7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B438CAD-A651-42BF-94C4-60829EC73A7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B438CAD-A651-42BF-94C4-60829EC73A7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

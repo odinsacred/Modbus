@@ -7,7 +7,7 @@ namespace ComportLib
     public static class SerialCommExtensions
     {
 
-        public static async Task<byte[]> ReadBufferAsync(this ISerialPort serialPort, int count,
+        public static async Task<byte[]> ReadBufferAsync(this ICommunication serialPort, int count,
             CancellationToken cancellation)
         {
             if (count <= 0)
@@ -25,7 +25,7 @@ namespace ComportLib
             return buffer;
         }
 
-        public static Task WriteBufferAsync(this ISerialPort serialPort, byte[] buffer, CancellationToken cancellation)
+        public static Task WriteBufferAsync(this ICommunication serialPort, byte[] buffer, CancellationToken cancellation)
         {
             return serialPort.WriteAsync(buffer, 0, buffer.Length, cancellation);
         }

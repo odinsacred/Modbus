@@ -3,14 +3,43 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:dataGrid2D="http://gu.se/DataGrid2D"
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:local="clr-namespace:ModbusSlave"
         xmlns:v="clr-namespace:ModbusSlave.Views"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         mc:Ignorable="d"
         Title="{Binding Title}">
-
-    <Grid>
+    <Window.Resources>
+        <HierarchicalDataTemplate x:Key="MasterTemplate" ItemsSource="{Binding Children}" DataType="{x:Type local:INode}">
+            <StackPanel Tag="{Binding DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"  cal:Message.Attach="[Event MouseLeftButtonDown] = [Action SelectItem($this)]">
+                <TextBlock Text="{Binding ItemName}" />
+                <StackPanel.ContextMenu>
+                    <ContextMenu cal:Action.TargetWithoutContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
+                        <MenuItem Header="AddPort" cal:Message.Attach="AddPort($dataContext)" />
+                    </ContextMenu>
+                </StackPanel.ContextMenu>
+            </StackPanel>
+        </HierarchicalDataTemplate>
+        <HierarchicalDataTemplate x:Key="PortTemplate"  ItemsSource="{Binding Children}" DataType="{x:Type local:INode}">
+            <StackPanel Tag="{Binding DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"  cal:Message.Attach="[Event MouseLeftButtonDown] = [Action SelectItem($this)]">
+                <TextBlock Text="{Binding ItemName}" />
+                <StackPanel.ContextMenu>
+                    <ContextMenu cal:Action.TargetWithoutContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
+                        <MenuItem Header="AddDevice" cal:Message.Attach="AddDevice($dataContext)" />
+                        <MenuItem Header="DeletePort" cal:Message.Attach="DeletePort($dataContext)" />
+                    </ContextMenu>
+                </StackPanel.ContextMenu>
+            </StackPanel>
+            
+        </HierarchicalDataTemplate>
+        <DataTemplate x:Key="RootTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Path=PropertyName}"></TextBlock>
+                <TextBox Text="{Binding Path=PropertyValue}"></TextBox>
+            </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid  Name="GridLayout">
         <Grid.RowDefinitions>
             <RowDefinition Height="19"/>
             <RowDefinition Height="*"/>
@@ -26,10 +55,10 @@
                     </LinearGradientBrush>
                 </Menu.Background>
                 <MenuItem Header="File">
-                    <MenuItem Header="Open" cal:Message.Attach="Click=mnuOpen_Click" />
-                    <MenuItem Header="Save"  cal:Message.Attach="Click=mnuSave_Click"/>
+                    <MenuItem Header="Open" cal:Message.Attach="Click=mnuOpenClick" />
+                    <MenuItem Header="Save"  cal:Message.Attach="Click=mnuSaveClick"/>
                     <Separator/>
-                    <MenuItem Header="Exit"  cal:Message.Attach="mnuExit_Click"/>
+                    <MenuItem Header="Exit"  cal:Message.Attach="mnuExitClick"/>
                 </MenuItem>
                 <MenuItem Header="AddIns" Name="menuAddins"/>
                 <MenuItem Header="Manage">
@@ -45,38 +74,31 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
-
-
-
-            <TreeView x:Name="FolderView" ItemsSource="{Binding Items}">
-                <TreeView.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Create Tag Group"/>
-                        <MenuItem Header="Delete Tag Group"/>
-                        <MenuItem Header="Create Tag"/>
-                        <MenuItem Header="Delete Tag"/>
-                    </ContextMenu>
-                </TreeView.ContextMenu>
-                <TreeView.ItemContainerStyle>
-                    <Style TargetType="{x:Type TreeViewItem}">
-                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
-                    </Style>
-                </TreeView.ItemContainerStyle>
-
-                <TreeView.ItemTemplate>
-                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                        <StackPanel Orientation="Horizontal">
-                            <!--Image Width="20" Margin="3" 
-                                    Source="{Binding ImageName,
-                                        Converter={x:Static local:HeaderToImageConverter.Instance}}" /-->
-                            <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
-                        </StackPanel>
-                    </HierarchicalDataTemplate>
-                </TreeView.ItemTemplate>
-
+            <TreeView ItemsSource="{Binding MasterNode}" MouseRightButtonDown="TreeView1_MouseRightButtonDown">
+                <TreeView.ItemTemplateSelector>
+                    <local:MenuSelector 
+                        MasterTemplate="{StaticResource MasterTemplate}"
+                        PortTemplate="{StaticResource PortTemplate}"/>
+                </TreeView.ItemTemplateSelector>
             </TreeView>
+            <ListView Grid.Column="1" ItemsSource="{Binding Path = Properties, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn DisplayMemberBinding="{ Binding Path=PropertyName}">
+                            <TextBlock Padding="5" Margin="5">Имя параметра</TextBlock>
+                        </GridViewColumn>
+                        <GridViewColumn x:Name="note"  Header="Значение параметра">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBox Padding="5" Margin="5" Text="{Binding Path=PropertyValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="NoWrap"
+                                             cal:Message.Attach="[Event TextChanged] = [Action SaveParameter($dataContext)]"></TextBox>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
         </Grid>
-
     </Grid>
    
 </Window>
