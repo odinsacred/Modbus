@@ -15,6 +15,10 @@ using Microsoft.Win32;
 using System.Windows;
 using System.IO;
 using System.Reflection;
+using ModbusSlave.Models;
+using System.Windows.Navigation;
+using System.Windows.Input;
+using System.ComponentModel;
 
 namespace ModbusSlave.ViewModels
 {
@@ -34,10 +38,6 @@ namespace ModbusSlave.ViewModels
 
 
         public ObservableCollection<INode> MasterNode { get; set; }
-
-        private const int ROWS = 0x1000;
-
-        private const int COLUMNS = 0x10;
 
         public string Title => "Modbus Slave";
 
@@ -74,19 +74,6 @@ namespace ModbusSlave.ViewModels
 
         private Random rnd = new Random();
 
-        public void SelectItem(object o)
-        {
-            SelectedItem = o as INode;
-            Properties = new ObservableCollection<ItemProperty>();
-            switch (SelectedItem.type)
-            {
-                case NodeTypes.master:
-                    FillRootProp((RootItem)SelectedItem); break;
-                case NodeTypes.port:
-                    FillPortProp((PortItem)SelectedItem); break;
-            }
-        }
-
         public void SaveParameter(object o)
         {
             if(SelectedItem.type == NodeTypes.master)
@@ -107,15 +94,19 @@ namespace ModbusSlave.ViewModels
             Properties.Add(new ItemProperty() { PropertyName = port.GetType().GetProperty("ItemName").Name, PropertyValue = port.GetType().GetProperty("ItemName").GetValue(port).ToString() });
             Properties.Add(new ItemProperty() { PropertyName = port.GetType().GetProperty("Baud").Name, PropertyValue = port.GetType().GetProperty("Baud").GetValue(port).ToString() });
         }
+
+        public ServersTree ServersTree { get; private set; }
+
         public MainViewModel()
         {
             
             memoryMap = new Device();
-            MasterNode = new ObservableCollection<INode>();
-            RootItem mainItem = new RootItem();
-            mainItem.ItemName = "Master Node";
-            //mainItem.Children.Add(new DummyNode());
-            MasterNode.Add(mainItem);
+            //MasterNode = new ObservableCollection<INode>();
+            //RootItem mainItem = new RootItem();
+            //mainItem.ItemName = "Master Node";
+            ////mainItem.Children.Add(new DummyNode());
+            //MasterNode.Add(mainItem);
+            ServersTree = new ServersTree();
         }
 
         public void TreeSelectionChanged(object o)
@@ -202,27 +193,66 @@ namespace ModbusSlave.ViewModels
             //this.Close();
         }
 
-        public void AddPort(object o)
+        public void AddPort(LocalHostNode o)
         {
-            RootItem root = o as RootItem;
-            PortItem port = new PortItem();
-            port.ItemName = "COM " + root.Children.Count;
-            root.AddChild(port);
+            o.Children.Add(new PortNode(o));
         }
 
-        public void DeletePort(object o)
+        public void DeletePort(PortNode o)
         {
-            INode node = o as INode;
-            //if (node.type == NodeTypes.port)
-            //    MasterNode[0].Children.Remove(node);
+            o.Owner.Children.Remove(o);
         }
 
-        public void AddDevice(object o)
+        public void AddDevice(PortNode o)
         {
-            DeviceItem device = new DeviceItem();
-            //device.ItemName = "Device " + MasterNode[0].Children.Count;
-            //MasterNode[0].Children.Add(device);
+            o.Children.Add(new DeviceNode(o));
         }
 
+        public void DeleteDevice(DeviceNode o)
+        {
+            o.Owner.Children.Remove(o);
+        }
+
+        public void AddTag(DeviceNode o)
+        {
+            o.Children.Add(new TagNode(o));
+        }
+
+        public void DeleteTag(TagNode o)
+        {
+           o.Owner.Children.Remove(o);
+        }
+
+        #region TreeView
+        // INotifyPropertyChanged
+
+        private string oldPortName = string.Empty;
+
+        public void RenamePort(PortNode sender)
+        {
+            oldPortName = sender.Name;
+            sender.IsInEditMode = true;
+        }
+
+        public void RenamePortComplete(PortNode sender, string name, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
+                sender.ChangeName(name);
+                sender.IsInEditMode = false;
+            }
+            if(e.Key == Key.Escape)
+            {
+                sender.ChangeName((string)oldPortName);
+                sender.IsInEditMode = false;
+            }
+        }
+
+        public void RenamePortComplete(PortNode sender, string name)
+        {
+            sender.ChangeName(name);
+            sender.IsInEditMode = false;
+        }
+        #endregion TreeView
     }
 }

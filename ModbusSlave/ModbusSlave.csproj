@@ -81,6 +81,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\DeviceNode.cs" />
+    <Compile Include="Models\LocalHostNode.cs" />
+    <Compile Include="Models\PortNode.cs" />
+    <Compile Include="Models\TagNode.cs" />
+    <Compile Include="Models\TreeNode.cs" />
+    <Compile Include="Models\TreeNodeDetailsView.cs" />
+    <Compile Include="ViewModels\PortViewModel.cs" />
+    <Compile Include="Models\ServersTree.cs" />
+    <Compile Include="Views\PortView.xaml.cs">
+      <DependentUpon>PortView.xaml</DependentUpon>
+    </Compile>
     <Page Include="Views\BinaryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -130,6 +141,10 @@
       <DependentUpon>MainView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\PortView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

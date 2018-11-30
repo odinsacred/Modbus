@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ModbusSlave
 {
-    enum NodeTypes
+    public enum NodeTypes
     {
         master,
         tag,

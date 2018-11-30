@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows;
+using ModbusSlave.Models;
 
 namespace ModbusSlave
 {
@@ -18,7 +19,7 @@ namespace ModbusSlave
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            INode node = (INode)item;
+            TreeNode node = (TreeNode)item;
 
             switch (node.type)
             {

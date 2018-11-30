@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ModbusSlave.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,9 +24,7 @@ namespace ModbusSlave.Views
         public MainView()
         {
             InitializeComponent();
-            
         }
-
         #region selecting treeViewItem by mouse right click
 
         private void TreeView1_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
@@ -46,5 +45,24 @@ namespace ModbusSlave.Views
             return source;
         }
         #endregion
+
+        //private void DetailsViewLoadCompleted(object sender, NavigationEventArgs e)
+        //{
+        //    UpdateDetailsViewDataContext(sender);
+        //}
+
+        //private void DetailsViewDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        //{
+        //    UpdateDetailsViewDataContext(sender);
+        //}
+
+        //private static void UpdateDetailsViewDataContext(object sender)
+        //{
+        //    var frame = (Frame)sender;
+        //    var content = frame.Content as FrameworkElement;
+        //    if (content == null)
+        //        return;
+        //    content.DataContext = frame.DataContext;
+        //}
     }
 }
