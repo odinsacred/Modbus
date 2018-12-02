@@ -21,20 +21,8 @@ namespace ModbusSlave.Models
             Icon = "/Images/Localhost.png";
         }
 
-        //public ObservableCollection<NodeGroupItem> Items { get; private set; }
-
         public ServersTree Owner { get; private set; }
 
-        //public override IList<ICommand> Commands
-        //{
-        //    get { return CommandList; }
-        //    protected set { }
-        //}
-
-        //TODO: Если не получится реализовать через Caliburn, нужно будет использовать команды
-        //private static readonly List<ICommand> CommandList = new List<ICommand>
-        //{
-        //    new RefreshServersCommand()
-        //};
+        
     }
 }

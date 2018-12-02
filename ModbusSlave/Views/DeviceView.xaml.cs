@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace ModbusSlave.Views
 {
     /// <summary>
-    /// Interaction logic for BinaryView.xaml
+    /// Interaction logic for DeviceView.xaml
     /// </summary>
-    public partial class BinaryView : UserControl
+    public partial class DeviceView : UserControl
     {
-        public BinaryView()
+        public DeviceView()
         {
             InitializeComponent();
         }

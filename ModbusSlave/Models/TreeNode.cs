@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Caliburn.Micro;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -8,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace ModbusSlave.Models
 {
-    public class TreeNode : INotifyPropertyChanged
+    public class TreeNode : Screen, INotifyPropertyChanged
     {
         public TreeNode()
         {
             Children = new ObservableCollection<TreeNode>();
-            DetailsView = new TreeNodeDetailsView();
+            //DetailsView = new TreeNodeDetailsView();
         }
 
         public bool IsExpanded { get; set; }
@@ -37,7 +38,7 @@ namespace ModbusSlave.Models
             Name = name;
         }
 
-        public TreeNodeDetailsView DetailsView { get; protected set; }
+        //public TreeNodeDetailsView DetailsView { get; protected set; }
 
         public string Icon
         {

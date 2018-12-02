@@ -18,7 +18,7 @@ namespace ModbusSlave.Views
     /// <summary>
     /// Interaction logic for NodeView.xaml
     /// </summary>
-    public partial class PortView : Page
+    public partial class PortView : UserControl
     {
         public PortView()
         {

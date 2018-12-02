@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace ModbusSlave.Views
 {
     /// <summary>
-    /// Interaction logic for HexView.xaml
+    /// Interaction logic for TagView.xaml
     /// </summary>
-    public partial class HexView : UserControl
+    public partial class TagView : UserControl
     {
-        public HexView()
+        public TagView()
         {
             InitializeComponent();
         }

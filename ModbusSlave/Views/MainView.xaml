@@ -13,7 +13,8 @@
         Title="{Binding Title}">
     <Window.Resources>
         <HierarchicalDataTemplate x:Key="MasterTemplate" ItemsSource="{Binding Children}" DataType="{x:Type model:TreeNode}">
-            <StackPanel Tag="{Binding DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}">
+            <StackPanel Tag="{Binding DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}" Orientation="Horizontal">
+                <Image Width="16" Height="16" Margin="3,0" Source="{Binding Icon}"/>
                 <TextBlock Text="{Binding Name}" />
                 <StackPanel.ContextMenu>
                     <ContextMenu cal:Action.TargetWithoutContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
@@ -24,10 +25,16 @@
         </HierarchicalDataTemplate>
         <HierarchicalDataTemplate x:Key="PortTemplate"  ItemsSource="{Binding Children}" DataType="{x:Type  model:TreeNode}">
             <Grid Tag="{Binding DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}">
-                <TextBlock Text="{Binding Name}" />
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Image Width="16" Height="16" Margin="3,0" Source="{Binding Icon}" Grid.Column="0"/>
+                <TextBlock Text="{Binding Name}"  Grid.Column="1"/>
                 <TextBox x:Name="editableTextBoxHeader" Visibility="Hidden" MinWidth="100"
-                             Text="{Binding Name, Mode=OneWay, UpdateSourceTrigger=LostFocus}"
-                             cal:Message.Attach="[Event KeyDown] = [Action RenamePortComplete($dataContext,$this,$eventArgs)]"/>
+                             Text="{Binding Name, Mode=OneTime, UpdateSourceTrigger=LostFocus}"
+                             cal:Message.Attach="[Event IsVisibleChanged] = [Action Test($dataContext)];[Event KeyDown] = [Action RenamePortComplete($dataContext,$this,$eventArgs)]"
+                             Grid.Column="1"/>
 
                 <Grid.ContextMenu>
                     <ContextMenu cal:Action.TargetWithoutContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
@@ -48,26 +55,63 @@
             </HierarchicalDataTemplate.Triggers>
         </HierarchicalDataTemplate>
         <HierarchicalDataTemplate x:Key="DeviceTemplate"  ItemsSource="{Binding Children}" DataType="{x:Type  model:TreeNode}">
-            <StackPanel Tag="{Binding DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}">
-                <TextBlock Text="{Binding Name}" />
-                <StackPanel.ContextMenu>
+            <Grid Tag="{Binding DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Image Width="16" Height="16" Margin="3,0" Source="{Binding Icon}" Grid.Column="0"/>
+                <TextBlock Text="{Binding Name}" Grid.Column="1"/>
+                <TextBox x:Name="editableTextBoxHeader" Visibility="Hidden" MinWidth="100"
+                             Text="{Binding Name, Mode=OneTime, UpdateSourceTrigger=LostFocus}"
+                             cal:Message.Attach="[Event KeyDown] = [Action RenameDeviceComplete($dataContext,$this,$eventArgs)]"
+                             Grid.Column="1"/>
+                <Grid.ContextMenu>
                     <ContextMenu cal:Action.TargetWithoutContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
                         <MenuItem Header="AddTag" cal:Message.Attach="AddTag($dataContext)" />
                         <MenuItem Header="DeleteDevice" cal:Message.Attach="DeleteDevice($dataContext)" />
+                        <MenuItem Header="Rename" cal:Message.Attach="RenameDevice($dataContext)" />
                     </ContextMenu>
-                </StackPanel.ContextMenu>
-            </StackPanel>
-           
+                </Grid.ContextMenu>
+            </Grid>
+            <HierarchicalDataTemplate.Triggers>
+                <MultiDataTrigger>
+                    <!-- Selected, editing is generally active - the text box is displayed -->
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsInEditMode}" Value="True"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter TargetName="editableTextBoxHeader" Property="Visibility" Value="Visible" />
+                </MultiDataTrigger>
+            </HierarchicalDataTemplate.Triggers>
         </HierarchicalDataTemplate>
         <HierarchicalDataTemplate x:Key="TagTemplate"  ItemsSource="{Binding Children}" DataType="{x:Type  model:TreeNode}">
-            <StackPanel Tag="{Binding DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}">
-                <TextBlock Text="{Binding Name}" />
-                <StackPanel.ContextMenu>
+            <Grid Tag="{Binding DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Image Width="16" Height="16" Margin="3,0" Source="{Binding Icon}" Grid.Column="0"/>
+                <TextBlock Text="{Binding Name}" Grid.Column="1"/>
+                <TextBox x:Name="editableTextBoxHeader" Visibility="Hidden" MinWidth="100"
+                             Text="{Binding Name, Mode=OneTime, UpdateSourceTrigger=LostFocus}"
+                             cal:Message.Attach="[Event KeyDown] = [Action RenameTagComplete($dataContext,$this,$eventArgs)]"
+                             Grid.Column="1"/>
+                <Grid.ContextMenu>
                     <ContextMenu cal:Action.TargetWithoutContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
                         <MenuItem Header="DeleteTag" cal:Message.Attach="DeleteTag($dataContext)" />
+                        <MenuItem Header="Rename" cal:Message.Attach="RenameTag($dataContext)" />
                     </ContextMenu>
-                </StackPanel.ContextMenu>
-            </StackPanel>
+                </Grid.ContextMenu>
+            </Grid>
+            <HierarchicalDataTemplate.Triggers>
+                <MultiDataTrigger>
+                    <!-- Selected, editing is generally active - the text box is displayed -->
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsInEditMode}" Value="True"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter TargetName="editableTextBoxHeader" Property="Visibility" Value="Visible" />
+                </MultiDataTrigger>
+            </HierarchicalDataTemplate.Triggers>
         </HierarchicalDataTemplate>
         <DataTemplate x:Key="RootTemplate">
             <StackPanel Orientation="Horizontal">
@@ -112,7 +156,8 @@
                 <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
             <TreeView x:Name="_serversTree" ItemsSource="{Binding ServersTree.Children}" MouseRightButtonDown="TreeView1_MouseRightButtonDown"
-                      SelectedValuePath="DetailsView">
+                      SelectedValuePath="DetailsView"
+                      cal:Message.Attach="[Event SelectedItemChanged]=[Action ActivateChildView($this.SelectedItem)]">
                 <TreeView.ItemTemplateSelector>
                     <local:MenuSelector 
                         MasterTemplate="{StaticResource MasterTemplate}"
@@ -122,11 +167,9 @@
 
                 </TreeView.ItemTemplateSelector>
             </TreeView>
-            <Frame Grid.Column="1" 
-                   Source="{Binding ElementName=_serversTree, Path=SelectedValue.(model:TreeNodeDetailsView.Page) }" 
-                   NavigationUIVisibility="Hidden">
-            </Frame>
+            <ContentControl Name="ActiveItem" Grid.Column="1" />
         </Grid>
+        
     </Grid>
    
 </Window>

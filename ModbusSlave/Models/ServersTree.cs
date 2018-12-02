@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ModbusSlave.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace ModbusSlave.Models
             //Context = runContext;
             Children = new ObservableCollection<TreeNode>
             {
-                new LocalHostNode(this),
+                new LocalHostViewModel(this),
             };
         }
 

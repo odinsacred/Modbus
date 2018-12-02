@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace ModbusSlave.Views
 {
     /// <summary>
-    /// Interaction logic for DecView.xaml
+    /// Interaction logic for LocalHostView.xaml
     /// </summary>
-    public partial class DecView : UserControl
+    public partial class LocalHostView : UserControl
     {
-        public DecView()
+        public LocalHostView()
         {
             InitializeComponent();
         }

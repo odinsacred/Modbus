@@ -23,7 +23,7 @@ using System.ComponentModel;
 namespace ModbusSlave.ViewModels
 {
    
-    class MainViewModel : Screen
+    class MainViewModel : Conductor<IScreen>.Collection.OneActive
     {
 
         Slave slave;
@@ -34,7 +34,7 @@ namespace ModbusSlave.ViewModels
 
         CancellationTokenSource cts;
 
-        public ObservableCollection<ItemProperty> Properties { get; set; }
+        //public ObservableCollection<ItemProperty> Properties { get; set; }
 
 
         public ObservableCollection<INode> MasterNode { get; set; }
@@ -65,7 +65,7 @@ namespace ModbusSlave.ViewModels
 
         public Parity SelectedParity { get; set; } = Parity.None;
 
-        public INode SelectedItem { get; set; }
+        public TreeNode SelectedItem { get; set; }
 
 
         public string[] RowHeaders { get; }
@@ -74,63 +74,16 @@ namespace ModbusSlave.ViewModels
 
         private Random rnd = new Random();
 
-        public void SaveParameter(object o)
-        {
-            if(SelectedItem.type == NodeTypes.master)
-            {
-                ((RootItem)SelectedItem).ItemName = (o as ItemProperty).PropertyValue;
-            }
-           
-        }
-
-        private void FillRootProp(RootItem root)
-        {
-
-            Properties.Add(new ItemProperty() { PropertyName = root.GetType().GetProperty("ItemName").Name, PropertyValue = root.GetType().GetProperty("ItemName").GetValue(root).ToString()});//root.ItemName });
-        }
-
-        private void FillPortProp(PortItem port)
-        {
-            Properties.Add(new ItemProperty() { PropertyName = port.GetType().GetProperty("ItemName").Name, PropertyValue = port.GetType().GetProperty("ItemName").GetValue(port).ToString() });
-            Properties.Add(new ItemProperty() { PropertyName = port.GetType().GetProperty("Baud").Name, PropertyValue = port.GetType().GetProperty("Baud").GetValue(port).ToString() });
-        }
-
         public ServersTree ServersTree { get; private set; }
 
         public MainViewModel()
         {
             
             memoryMap = new Device();
-            //MasterNode = new ObservableCollection<INode>();
-            //RootItem mainItem = new RootItem();
-            //mainItem.ItemName = "Master Node";
-            ////mainItem.Children.Add(new DummyNode());
-            //MasterNode.Add(mainItem);
             ServersTree = new ServersTree();
         }
 
-        public void TreeSelectionChanged(object o)
-        {
-            INode node = o as INode;
-            if(node.type == NodeTypes.master)
-            {
 
-            }
-        }
-
-        public void RandomizeData()
-        {
-            Random rnd = new Random();
-            for (int index = 0; index < 10; index++)
-            {
-                memoryMap.AddHoldingRegister(new Register<UInt16>((UInt16)index) { Value = (UInt16)rnd.Next(0x00, 0xFFFF) });
-            }
-
-            for (int index = 0; index < 10; index++)
-            {
-                memoryMap.AddInputRegister(new Register<UInt16>((UInt16)index) { Value = (UInt16)rnd.Next(0x00, 0xFFFF) });
-            }
-        }
 
         public void OpenPort()
         {
@@ -193,32 +146,32 @@ namespace ModbusSlave.ViewModels
             //this.Close();
         }
 
-        public void AddPort(LocalHostNode o)
+        public void AddPort(LocalHostViewModel o)
         {
-            o.Children.Add(new PortNode(o));
+            o.Children.Add(new PortViewModel(o));
         }
 
-        public void DeletePort(PortNode o)
-        {
-            o.Owner.Children.Remove(o);
-        }
-
-        public void AddDevice(PortNode o)
-        {
-            o.Children.Add(new DeviceNode(o));
-        }
-
-        public void DeleteDevice(DeviceNode o)
+        public void DeletePort(PortViewModel o)
         {
             o.Owner.Children.Remove(o);
         }
 
-        public void AddTag(DeviceNode o)
+        public void AddDevice(PortViewModel o)
         {
-            o.Children.Add(new TagNode(o));
+            o.Children.Add(new DeviceViewModel(o));
         }
 
-        public void DeleteTag(TagNode o)
+        public void DeleteDevice(DeviceViewModel o)
+        {
+            o.Owner.Children.Remove(o);
+        }
+
+        public void AddTag(DeviceViewModel o)
+        {
+            o.Children.Add(new TagViewModel(o));
+        }
+
+        public void DeleteTag(TagViewModel o)
         {
            o.Owner.Children.Remove(o);
         }
@@ -226,15 +179,16 @@ namespace ModbusSlave.ViewModels
         #region TreeView
         // INotifyPropertyChanged
 
+        #region renamePort
         private string oldPortName = string.Empty;
-
-        public void RenamePort(PortNode sender)
+       
+        public void RenamePort(PortViewModel sender)
         {
             oldPortName = sender.Name;
             sender.IsInEditMode = true;
         }
 
-        public void RenamePortComplete(PortNode sender, string name, KeyEventArgs e)
+        public void RenamePortComplete(PortViewModel sender, string name, KeyEventArgs e)
         {
             if(e.Key == Key.Enter)
             {
@@ -247,6 +201,58 @@ namespace ModbusSlave.ViewModels
                 sender.IsInEditMode = false;
             }
         }
+        #endregion renamePort
+        public void Test(object o)
+        {
+
+        }
+        #region renameDevice
+        private string oldDeviceName = string.Empty;
+
+        public void RenameDevice(DeviceViewModel sender)
+        {
+            oldDeviceName = sender.Name;
+            sender.IsInEditMode = true;
+        }
+
+        public void RenameDeviceComplete(DeviceViewModel sender, string name, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                sender.ChangeName(name);
+                sender.IsInEditMode = false;
+            }
+            if (e.Key == Key.Escape)
+            {
+                sender.ChangeName((string)oldDeviceName);
+                sender.IsInEditMode = false;
+            }
+        }
+        #endregion renameDevice
+
+        #region renameTag
+        private string oldTagName = string.Empty;
+
+        public void RenameTag(TagViewModel sender)
+        {
+            oldTagName = sender.Name;
+            sender.IsInEditMode = true;
+        }
+
+        public void RenameTagComplete(TagViewModel sender, string name, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                sender.ChangeName(name);
+                sender.IsInEditMode = false;
+            }
+            if (e.Key == Key.Escape)
+            {
+                sender.ChangeName((string)oldTagName);
+                sender.IsInEditMode = false;
+            }
+        }
+        #endregion renameTag
 
         public void RenamePortComplete(PortNode sender, string name)
         {
@@ -254,5 +260,10 @@ namespace ModbusSlave.ViewModels
             sender.IsInEditMode = false;
         }
         #endregion TreeView
+
+        public void ActivateChildView(object view)
+        {
+            ActivateItem((IScreen)view);
+        }
     }
 }

@@ -14,11 +14,11 @@ namespace ModbusSlave.Models
             type = NodeTypes.device;
             Name = "Name DeviceNode";
             Icon = "/Images/DAGroup.png";
-            DetailsView = new TreeNodeDetailsView
-            {
-                Page = new Uri("NodeView.xaml", UriKind.Relative),
-                Data = null,//Items,
-            };
+            //DetailsView = new TreeNodeDetailsView
+            //{
+            //    Page = new Uri("NodeView.xaml", UriKind.Relative),
+            //    Data = null,//Items,
+            //};
         }
 
         public PortNode Owner { get; private set; }
