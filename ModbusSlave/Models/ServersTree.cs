@@ -1,9 +1,11 @@
-﻿using ModbusSlave.ViewModels;
+﻿using ModbusLib;
+using ModbusSlave.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ModbusSlave.Models
@@ -12,13 +14,14 @@ namespace ModbusSlave.Models
     {
         //public IRunContext Context { get; set; }
 
-        public ServersTree(/*IRunContext runContext*/)
+        public ServersTree()
         {
             //Context = runContext;
             Children = new ObservableCollection<TreeNode>
             {
                 new LocalHostViewModel(this),
             };
+
         }
 
         public ObservableCollection<TreeNode> Children { get; private set; }
@@ -35,6 +38,11 @@ namespace ModbusSlave.Models
                 DisposeChildren(node.Children);
                 node.Dispose();
             }
+        }
+
+        public void CreateSlaves(CancellationToken token)
+        {
+            ((LocalHostViewModel)Children[0]).CreateSlaves(token);
         }
     }
 }

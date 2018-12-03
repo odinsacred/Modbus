@@ -24,23 +24,10 @@ namespace ModbusLib
             HoldingRegsCount = (UInt16)HoldingRegisters.Count;
         }
 
-        public void AddInputRegister(Register<UInt16> register)
+        public void SetHoldingRegister(UInt16 address, UInt16 value)
         {
-            InputRegisters.Add(register);
-            InputRegsCount = (UInt16)InputRegisters.Count;
-        }
-
-        public UInt16 GetInputRegister(UInt16 address)
-        {
-            var finded = InputRegisters.Find(x => x.Address == address);
-            return finded.Value;
-        }
-
-        public void SetInputRegister(UInt16 address, UInt16 value)
-        {
-
-            int index = InputRegisters.FindIndex(x => x.Address == address);
-            InputRegisters[index].Value = value;
+            int index = HoldingRegisters.FindIndex(x => x.Address == address);
+            HoldingRegisters[index].Value = value;
         }
 
         public UInt16 GetHoldingRegister(UInt16 address)
@@ -50,11 +37,26 @@ namespace ModbusLib
             return finded.Value;
         }
 
-        public void SetHoldingRegister(UInt16 address, UInt16 value)
+        public void AddInputRegister(Register<UInt16> register)
         {
-            int index = HoldingRegisters.FindIndex(x => x.Address == address);
-            HoldingRegisters[index].Value = value;
+            InputRegisters.Add(register);
+            InputRegsCount = (UInt16)InputRegisters.Count;
         }
+
+        public void SetInputRegister(UInt16 address, UInt16 value)
+        {
+
+            int index = InputRegisters.FindIndex(x => x.Address == address);
+            InputRegisters[index].Value = value;
+        }
+
+        public UInt16 GetInputRegister(UInt16 address)
+        {
+            var finded = InputRegisters.Find(x => x.Address == address);
+            return finded.Value;
+        }
+
+
 
         //-----------------------------------------------------------------
 

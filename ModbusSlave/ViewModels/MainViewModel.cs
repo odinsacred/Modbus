@@ -29,15 +29,9 @@ namespace ModbusSlave.ViewModels
         Slave slave;
         string currentFile;
         SerialComm serialPort;
-
         Device memoryMap;
 
         CancellationTokenSource cts;
-
-        //public ObservableCollection<ItemProperty> Properties { get; set; }
-
-
-        public ObservableCollection<INode> MasterNode { get; set; }
 
         public string Title => "Modbus Slave";
 
@@ -57,13 +51,15 @@ namespace ModbusSlave.ViewModels
 
         public int SelectedDataBits { get; set; } = 8;
 
-        public StopBits[] _StopBits => new StopBits[] { StopBits.None, StopBits.One, StopBits.Two };
+        public ComPortLib.StopBits[] _StopBits => new ComPortLib.StopBits[] 
+        { ComPortLib.StopBits.None, ComPortLib.StopBits.One, ComPortLib.StopBits.Two };
 
-        public StopBits SelectedStopBits { get; set; } = StopBits.One;
+        public ComPortLib.StopBits SelectedStopBits { get; set; } = ComPortLib.StopBits.One;
 
-        public Parity[] Parities => new Parity[] { Parity.Even, Parity.Odd, Parity.None };
+        public ComPortLib.Parity[] Parities => new ComPortLib.Parity[] 
+        { ComPortLib.Parity.Even, ComPortLib.Parity.Odd, ComPortLib.Parity.None };
 
-        public Parity SelectedParity { get; set; } = Parity.None;
+        public ComPortLib.Parity SelectedParity { get; set; } = ComPortLib.Parity.None;
 
         public TreeNode SelectedItem { get; set; }
 
@@ -78,12 +74,11 @@ namespace ModbusSlave.ViewModels
 
         public MainViewModel()
         {
-            
             memoryMap = new Device();
             ServersTree = new ServersTree();
         }
 
-
+        List<Slave> listOfSlaves;
 
         public void OpenPort()
         {
@@ -146,6 +141,12 @@ namespace ModbusSlave.ViewModels
             //this.Close();
         }
 
+        public void StartConfig()
+        {
+            cts = new CancellationTokenSource();
+            ServersTree.CreateSlaves(cts.Token);
+        }
+
         public void AddPort(LocalHostViewModel o)
         {
             o.Children.Add(new PortViewModel(o));
@@ -158,7 +159,7 @@ namespace ModbusSlave.ViewModels
 
         public void AddDevice(PortViewModel o)
         {
-            o.Children.Add(new DeviceViewModel(o));
+            o.Children.Add(new DeviceViewModel(o, new Device()));
         }
 
         public void DeleteDevice(DeviceViewModel o)
@@ -202,10 +203,7 @@ namespace ModbusSlave.ViewModels
             }
         }
         #endregion renamePort
-        public void Test(object o)
-        {
 
-        }
         #region renameDevice
         private string oldDeviceName = string.Empty;
 

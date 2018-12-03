@@ -1,6 +1,8 @@
-﻿using ModbusSlave.Models;
+﻿using ModbusLib;
+using ModbusSlave.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +11,12 @@ namespace ModbusSlave.ViewModels
 {
     public class TagViewModel : TreeNode
     {
+
         public bool[] IsWorking { get; set; } = { true, false };
+
+        public bool Running { get; set; } = true;
+
+        public int Value { get; set; }
 
         public DataTypes[] DataType => 
             new DataTypes[] {DataTypes.Int16, DataTypes.UInt16, DataTypes.Int32,
@@ -21,9 +28,17 @@ namespace ModbusSlave.ViewModels
 
         public bool IsWorkingSelected { get; set; }
 
-        public DataTypes DatatypeSelected { get; set; }
+        public DataTypes DatatypeSelected { get; set; } = DataTypes.UInt16;
 
         public AccessModes AccessModeSelected { get; set; }
+
+        public Register GetRegister()
+        {//TODO: Какая-то дичь получилась. Нужно выводить Value регистра в текстовое поле, хз как
+            if (DatatypeSelected == DataTypes.UInt16)
+                return new Register<UInt16>(Address);
+            else
+                throw new Exception("Не установлен тип данных для тега " + Name);
+        } 
 
         public TagViewModel(DeviceViewModel owner)
         {

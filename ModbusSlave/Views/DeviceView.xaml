@@ -15,10 +15,12 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0" Text="Включен в работу" Margin="4" Padding="4"></TextBlock>
         <TextBlock Grid.Row="1" Grid.Column="0" Text="Адрес" Margin="4" Padding="4"></TextBlock>
         <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding IsWorking}" SelectedValue="{Binding IsWorkingSelected}" Margin="4" Padding="4"></ComboBox>
         <xceed:IntegerUpDown Grid.Row="1" Grid.Column="1" Value="{Binding Address}" Minimum="1" Maximum="255" TextAlignment="Left" Margin="4" Padding="4"></xceed:IntegerUpDown>
+        <Button x:Name="Test" Content="Test" Grid.Column="0" Grid.Row="2"/>
     </Grid>
 </UserControl>

@@ -11,6 +11,11 @@ namespace ModbusSlave.Models
 {
     public class TreeNode : Screen, INotifyPropertyChanged
     {
+
+        private string icon;
+
+        private string name;
+
         public TreeNode()
         {
             Children = new ObservableCollection<TreeNode>();
@@ -66,8 +71,5 @@ namespace ModbusSlave.Models
         {
         }
 
-        private string icon;
-
-        private string name;
     }
 }

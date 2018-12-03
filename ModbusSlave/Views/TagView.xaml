@@ -7,25 +7,63 @@
              xmlns:xceed="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"></RowDefinition>
-            <RowDefinition Height="auto"></RowDefinition>
-            <RowDefinition Height="auto"></RowDefinition>
-            <RowDefinition Height="auto"></RowDefinition>
-        </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="Включен в работу" Margin="4" Padding="4"></TextBlock>
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="Адрес" Margin="4" Padding="4"></TextBlock>
-        <TextBlock Grid.Row="2" Grid.Column="0" Text="Тип данных" Margin="4" Padding="4"></TextBlock>
-        <TextBlock Grid.Row="3" Grid.Column="0" Text="Тип доступа" Margin="4" Padding="4"></TextBlock>
-        <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding IsWorking}" SelectedValue="{Binding IsWorkingSelected}" Margin="4" Padding="4"></ComboBox>
-        <xceed:IntegerUpDown Grid.Row="1" Grid.Column="1" Value="{Binding Address}" Minimum="1" Maximum="255" TextAlignment="Left" Margin="4" Padding="4"></xceed:IntegerUpDown>
-        <ComboBox Grid.Row="2" Grid.Column="1" ItemsSource="{Binding DataType}" SelectedValue="{Binding DataTypeSelected}" Margin="4" Padding="4"></ComboBox>
-        <ComboBox Grid.Row="3" Grid.Column="1" ItemsSource="{Binding AccessMode}" SelectedValue="{Binding AccessModeSelected}" Margin="4" Padding="4"></ComboBox>
+    <StackPanel Orientation="Vertical">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Включен в работу" Margin="4" Padding="4"></TextBlock>
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Адрес" Margin="4" Padding="4"></TextBlock>
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Тип данных" Margin="4" Padding="4"></TextBlock>
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Тип доступа" Margin="4" Padding="4"></TextBlock>
+            <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding IsWorking}" SelectedValue="{Binding IsWorkingSelected}" Margin="4" Padding="4"></ComboBox>
+            <xceed:IntegerUpDown Grid.Row="1" Grid.Column="1" Value="{Binding Address}" Minimum="1" Maximum="255" TextAlignment="Left" Margin="4" Padding="4"></xceed:IntegerUpDown>
+            <ComboBox Grid.Row="2" Grid.Column="1" ItemsSource="{Binding DataType}" SelectedValue="{Binding DatatypeSelected}" Margin="4" Padding="4"></ComboBox>
+            <ComboBox Grid.Row="3" Grid.Column="1" ItemsSource="{Binding AccessMode}" SelectedValue="{Binding AccessModeSelected}" Margin="4" Padding="4"></ComboBox>
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Running}" Value="true">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Running}" Value="false">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+        </Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
 
-    </Grid>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Текущее значение" Margin="4" Padding="4"></TextBlock>
+            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Value}" Margin="4" Padding="4"></TextBox>
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Running}" Value="false">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Running}" Value="true">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+        </Grid>
+    </StackPanel>
+    
 </UserControl>

@@ -141,15 +141,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AppBootstrapper.cs" />
-    <Compile Include="Directory\DeviceItem.cs" />
-    <Compile Include="Directory\DummyNode.cs" />
-    <Compile Include="Directory\ItemToContextMenuConverter.cs" />
     <Compile Include="Directory\MenuSelector.cs" />
     <Compile Include="Directory\NodeTypes.cs" />
-    <Compile Include="Directory\RootItem.cs" />
-    <Compile Include="Directory\PortItem.cs" />
     <Compile Include="HeaderToImageConvertor.cs" />
-    <Compile Include="Directory\INode.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>

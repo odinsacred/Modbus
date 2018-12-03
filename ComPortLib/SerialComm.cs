@@ -14,14 +14,14 @@ namespace ComportLib
         public event Action PortClosedEvent;
         public event Action PortOpenedEvent;
 
-        public SerialComm(string port, int baud, Parity parity, int dataBits, StopBits stopBits)
+        public SerialComm(string port, int baud, ComPortLib.Parity parity, int dataBits, ComPortLib.StopBits stopBits)
         {
             Open(port, baud, parity, dataBits, stopBits);
         }
 
-        private void Open(string port, int baud, Parity parity, int dataBits, StopBits stopBits)//, int timeout)
+        private void Open(string port, int baud, ComPortLib.Parity parity, int dataBits, ComPortLib.StopBits stopBits)//, int timeout)
         {
-            _port = new SerialPort(port, baud, parity, dataBits, stopBits);
+            _port = new SerialPort(port, baud, ConvertParity(parity), dataBits, ConvertStopBits(stopBits));
             _port.Open();
             if (PortOpenedEvent != null) PortOpenedEvent.Invoke();
         }
@@ -36,6 +36,11 @@ namespace ComportLib
             }
         }
 
+        public static string[] GetAvailablePorts()
+        {
+            return SerialPort.GetPortNames();
+        }
+
         public async Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellation)
         {
             DisposedCheck();
@@ -48,10 +53,10 @@ namespace ComportLib
         public async Task<int> ReadBytesAsync(byte[] buffer, CancellationToken cancellation)
         {
             DisposedCheck();
-           // _port.DiscardInBuffer();
+            // _port.DiscardInBuffer();
             while (_port.BytesToRead <= 0)
                 await Task.Delay(10, cancellation);
-            
+
             return _port.Read(buffer, 0, buffer.Length);
         }
 
@@ -75,6 +80,36 @@ namespace ComportLib
         {
             _port?.Dispose();
             _port = null;
+        }
+
+        private Parity ConvertParity(ComPortLib.Parity parity)
+        {
+            switch (parity)
+            {
+                case ComPortLib.Parity.None:
+                    return Parity.None;
+                case ComPortLib.Parity.Odd:
+                    return Parity.Odd;
+                case ComPortLib.Parity.Even:
+                    return Parity.Even;
+                default:
+                    throw new Exception("Parity converter exception");
+            }
+        }
+
+        private StopBits ConvertStopBits(ComPortLib.StopBits stopBits)
+        {
+            switch (stopBits)
+            {
+                case ComPortLib.StopBits.None:
+                    return StopBits.None;
+                case ComPortLib.StopBits.One:
+                    return StopBits.One;
+                case ComPortLib.StopBits.Two:
+                    return StopBits.Two;
+                default:
+                    throw new Exception("StopBits converter exception");
+            }
         }
     }
 }
