@@ -19,6 +19,7 @@ using ModbusSlave.Models;
 using System.Windows.Navigation;
 using System.Windows.Input;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace ModbusSlave.ViewModels
 {
@@ -29,7 +30,7 @@ namespace ModbusSlave.ViewModels
         Slave slave;
         string currentFile;
         SerialComm serialPort;
-        Device memoryMap;
+        //MemoryMap memoryMap;
 
         CancellationTokenSource cts;
 
@@ -74,26 +75,26 @@ namespace ModbusSlave.ViewModels
 
         public MainViewModel()
         {
-            memoryMap = new Device();
+            //memoryMap = new MemoryMap();
             ServersTree = new ServersTree();
         }
 
         List<Slave> listOfSlaves;
 
-        public void OpenPort()
-        {
+        //public void OpenPort()
+        //{
             
-            serialPort = new SerialComm(SelectedPort, SelectedBaudRate, SelectedParity, SelectedDataBits, SelectedStopBits);
-            cts = new CancellationTokenSource();
-            try
-            {
-                slave = new Slave(DeviceAddress, serialPort, memoryMap, cts.Token);
-            }
-            catch (Exception ex)
-            {
-            }
+        //    serialPort = new SerialComm(SelectedPort, SelectedBaudRate, SelectedParity, SelectedDataBits, SelectedStopBits);
+        //    cts = new CancellationTokenSource();
+        //    try
+        //    {
+        //        slave = new Slave(DeviceAddress, serialPort, memoryMap, cts.Token);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //    }
             
-        }
+        //}
 
         public void ClosePort()
         {
@@ -159,7 +160,8 @@ namespace ModbusSlave.ViewModels
 
         public void AddDevice(PortViewModel o)
         {
-            o.Children.Add(new DeviceViewModel(o, new Device()));
+            MemoryMap memoryMap = new MemoryMap();
+            o.Children.Add(new DeviceViewModel(o, memoryMap));
         }
 
         public void DeleteDevice(DeviceViewModel o)

@@ -18,7 +18,7 @@ namespace SlaveTestApp
     {
         Slave slave;
         SerialComm serialPort;
-        Device map;
+        MemoryMap map;
         CancellationTokenSource cts;
         public Form1()
         {
@@ -27,8 +27,8 @@ namespace SlaveTestApp
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            map = new Device();
-            serialPort = new SerialComm("COM1", 19200, Parity.None, 8, StopBits.One);
+            map = new MemoryMap();
+            serialPort = new SerialComm("COM1", 19200, ComPortLib.Parity.None, 8, ComPortLib.StopBits.One);
             cts = new CancellationTokenSource();
             try
             {

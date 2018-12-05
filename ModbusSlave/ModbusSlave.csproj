@@ -99,6 +99,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\RegToInt16Converter.cs" />
     <Compile Include="Models\AccessModes.cs" />
     <Compile Include="Models\DataTypes.cs" />
     <Compile Include="Models\DeviceNode.cs" />

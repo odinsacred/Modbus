@@ -73,6 +73,7 @@ namespace ModbusLib
                         UInt16 registerAddress = Utility.ConvertBigEndianToLittleEndian(BitConverter.ToUInt16(message, 2));
                         UInt16 Value = Utility.ConvertBigEndianToLittleEndian(BitConverter.ToUInt16(message, 4));
                         return CreateResponse(_mbFunctions.FuncWriteSingleRegister(registerAddress, (byte)Value));
+                    case 0x10: return CreateResponse(_mbFunctions.FunctionCodeNotSupported(message[1]));
                     default: return CreateResponse(_mbFunctions.FunctionCodeNotSupported(message[1]));
                 }
             }

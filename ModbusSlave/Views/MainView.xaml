@@ -157,7 +157,6 @@
                 <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
             <TreeView x:Name="_serversTree" ItemsSource="{Binding ServersTree.Children}" MouseRightButtonDown="TreeView1_MouseRightButtonDown"
-                      SelectedValuePath="DetailsView"
                       cal:Message.Attach="[Event SelectedItemChanged]=[Action ActivateChildView($this.SelectedItem)]">
                 <TreeView.ItemTemplateSelector>
                     <local:MenuSelector 

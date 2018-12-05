@@ -18,6 +18,6 @@ namespace ModbusLib
         UInt16[] GetInputRegisters(UInt16 index, UInt16 count);
         UInt16[] GetHoldingRegisters(UInt16 index, UInt16 count);
 
-        void AddHoldingRegister(Register<UInt16> register);
+        void AddHoldingRegister(Register register);//Register<UInt16> register);
     }
 }

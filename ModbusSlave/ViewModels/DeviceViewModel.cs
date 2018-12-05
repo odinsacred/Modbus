@@ -3,6 +3,7 @@ using ModbusSlave.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,12 +49,15 @@ namespace ModbusSlave.ViewModels
 
         public IMemoryMap GetMemory()
         {
+            Debug.WriteLine("GetMemory Method (memory map): " + memoryMap.GetHashCode());
             foreach (var item in Children)
             {
                 TagViewModel tag = (TagViewModel)item;
-                if (tag.DatatypeSelected == DataTypes.UInt16)
-                    memoryMap.AddHoldingRegister((Register<ushort>)tag.GetRegister());//new Register<ushort>(tag.Address));
-
+                Debug.WriteLine("DeviceViewModel GetMemory Method (TagViewModel): " + tag.GetHashCode());
+                foreach (Register reg in tag.RawValue)
+                {
+                    memoryMap.AddHoldingRegister(reg);                   
+                }              
             }
             return memoryMap;
         }
