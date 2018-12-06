@@ -105,6 +105,7 @@
     <Compile Include="Models\DeviceNode.cs" />
     <Compile Include="Models\LocalHostNode.cs" />
     <Compile Include="Models\PortNode.cs" />
+    <Compile Include="Models\Tag.cs" />
     <Compile Include="Models\TagNode.cs" />
     <Compile Include="Models\TreeNode.cs" />
     <Compile Include="Models\TreeNodeDetailsView.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="ViewModels\PortViewModel.cs" />
     <Compile Include="Models\ServersTree.cs" />
     <Compile Include="ViewModels\TagViewModel.cs" />
+    <Compile Include="ViewModels\UInt16ViewModel.cs" />
     <Compile Include="Views\DeviceView.xaml.cs">
       <DependentUpon>DeviceView.xaml</DependentUpon>
     </Compile>

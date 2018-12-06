@@ -69,7 +69,7 @@
                              Grid.Column="1"/>
                 <Grid.ContextMenu>
                     <ContextMenu cal:Action.TargetWithoutContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
-                        <MenuItem Header="AddTag" cal:Message.Attach="AddTag($dataContext)" />
+                        <MenuItem Header="AddUInt16Tag" cal:Message.Attach="AddTag($dataContext)" />
                         <MenuItem Header="DeleteDevice" cal:Message.Attach="DeleteDevice($dataContext)" />
                         <MenuItem Header="Rename" cal:Message.Attach="RenameDevice($dataContext)" />
                     </ContextMenu>

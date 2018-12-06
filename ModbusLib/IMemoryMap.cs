@@ -19,5 +19,7 @@ namespace ModbusLib
         UInt16[] GetHoldingRegisters(UInt16 index, UInt16 count);
 
         void AddHoldingRegister(Register register);//Register<UInt16> register);
+
+        event Action<UInt16, UInt16> HoldingRegisterChanged;
     }
 }

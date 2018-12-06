@@ -37,7 +37,6 @@ namespace ModbusSlave.ViewModels
                 foreach (var device in portModel.Children)
                 {
                     IMemoryMap map = ((DeviceViewModel)device).GetMemory();
-                    Debug.WriteLine("LocalHostViewModel CreateSlaves Method (memory map): " + map.GetHashCode());
                     ushort address = ((DeviceViewModel)device).Address;
                     new Slave(address,portModel.GetPort(),map,token);
                     

@@ -10,8 +10,11 @@ namespace ModbusLib
         //internal List<Register<UInt16>> InputRegisters { get; } = new List<Register<UInt16>>();
         internal List<Register> HoldingRegisters { get; } = new List<Register>();
         internal List<Register> InputRegisters { get; } = new List<Register>();
+
         public UInt16 HoldingRegsCount { get; set; }
         public UInt16 InputRegsCount { get; set; }
+
+        public event Action<UInt16,UInt16> HoldingRegisterChanged;
 
         public MemoryMap()
         {
@@ -29,6 +32,7 @@ namespace ModbusLib
         {
             int index = HoldingRegisters.FindIndex(x => x.Address == address);
             HoldingRegisters[index].Value = value;
+            HoldingRegisterChanged(address, value);
         }
 
         public UInt16 GetHoldingRegister(UInt16 address)

@@ -7,7 +7,7 @@ using System.ComponentModel;
 
 namespace ModbusLib
 {
-    public class Register/*: INotifyPropertyChanged*/
+    public class Register:INotifyPropertyChanged
     {
         private UInt16 _value;
 
@@ -25,16 +25,16 @@ namespace ModbusLib
             }
             set
             { _value = value;
-                //NotifyPropertyChanged("IsInEditMode");
+                NotifyPropertyChanged("Value");
             }
         }
 
-        //public event PropertyChangedEventHandler PropertyChanged;
-        //protected void NotifyPropertyChanged(string info)
-        //{
-        //    if (PropertyChanged != null)
-        //        PropertyChanged(this, new PropertyChangedEventArgs(info));
-        //}
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void NotifyPropertyChanged(string info)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(info));
+        }
     }
 
     //public class Register<T> : Register, INotifyPropertyChanged

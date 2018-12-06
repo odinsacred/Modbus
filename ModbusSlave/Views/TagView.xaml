@@ -27,13 +27,11 @@
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Включен в работу" Margin="4" Padding="4"></TextBlock>
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Адрес" Margin="4" Padding="4"></TextBlock>
             <TextBlock Grid.Row="2" Grid.Column="0" Text="Тип данных" Margin="4" Padding="4"></TextBlock>
-            <TextBlock Grid.Row="3" Grid.Column="0" Text="Тип доступа" Margin="4" Padding="4"></TextBlock>
             <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding IsWorking}" SelectedValue="{Binding IsWorkingSelected}" Margin="4" Padding="4"></ComboBox>
             <xceed:IntegerUpDown Grid.Row="1" Grid.Column="1" Value="{Binding Address}" Minimum="1" Maximum="255" TextAlignment="Left" Margin="4" Padding="4"
                                  cal:Message.Attach="[Event ValueChanged] = [Action RefreshAddress]"></xceed:IntegerUpDown>
             <ComboBox Grid.Row="2" Grid.Column="1" ItemsSource="{Binding DataType}" SelectedValue="{Binding DatatypeSelected}" Margin="4" Padding="4" 
                       cal:Message.Attach="[Event SelectionChanged] = [Action RefreshDataType]"></ComboBox>
-            <ComboBox Grid.Row="3" Grid.Column="1" ItemsSource="{Binding AccessMode}" SelectedValue="{Binding AccessModeSelected}" Margin="4" Padding="4"></ComboBox>
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Style.Triggers>
@@ -57,7 +55,7 @@
 
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Текущее значение" Margin="4" Padding="4"></TextBlock>
-            <TextBox Grid.Row="0" Grid.Column="1" cal:Message.Attach="[Event TextChanged]=[Action ChangeValue($this)]" Text="{Binding Value,Mode=TwoWay}" Margin="4" Padding="4"></TextBox>
+            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Value.Value,Mode=TwoWay}" Margin="4" Padding="4"></TextBox>
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Style.Triggers>

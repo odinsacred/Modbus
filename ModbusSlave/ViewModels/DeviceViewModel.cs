@@ -14,6 +14,7 @@ namespace ModbusSlave.ViewModels
     {
         IMemoryMap memoryMap;
 
+        List<Tag> Tags { get; set; } = new List<Tag>();
         public bool[] IsWorking { get; set; } = { true, false };
 
         public ushort Address { get; set; } = 1;
@@ -27,11 +28,22 @@ namespace ModbusSlave.ViewModels
             Name = "Device";
             Icon = "/Images/device.png";
             this.memoryMap = memoryMap;
+            this.memoryMap.HoldingRegisterChanged += MemoryMap_HoldingRegisterChanged;
+        }
+
+        private void MemoryMap_HoldingRegisterChanged(ushort address, ushort value)
+        {
+            foreach (var item in Tags)
+            {
+                if (item.Value.Address == address)
+                    item.Value.Value = value;
+            }
         }
 
         public PortViewModel Owner { get; private set; }
         //public ObservableCollection<TagViewModel> Children { get; set; }
         bool isInEditMode = false;
+
         public bool IsInEditMode
         {
             get { return isInEditMode; }
@@ -49,15 +61,11 @@ namespace ModbusSlave.ViewModels
 
         public IMemoryMap GetMemory()
         {
-            Debug.WriteLine("GetMemory Method (memory map): " + memoryMap.GetHashCode());
             foreach (var item in Children)
             {
                 TagViewModel tag = (TagViewModel)item;
-                Debug.WriteLine("DeviceViewModel GetMemory Method (TagViewModel): " + tag.GetHashCode());
-                foreach (Register reg in tag.RawValue)
-                {
-                    memoryMap.AddHoldingRegister(reg);                   
-                }              
+                Tags.Add(tag);
+                memoryMap.AddHoldingRegister(tag.Value);          
             }
             return memoryMap;
         }
